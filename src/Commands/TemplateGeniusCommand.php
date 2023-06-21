@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace TemplateGenius\TemplateGenius\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class TemplateGeniusCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'template-genius-laravel';
 
     public $description = 'My command';
 
