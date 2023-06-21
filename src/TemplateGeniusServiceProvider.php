@@ -4,9 +4,8 @@ namespace TemplateGenius\TemplateGenius;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use TemplateGenius\TemplateGenius\Commands\SyncTypesCommand;
 use TemplateGenius\TemplateGenius\Commands\SyncEventsCommand;
-use TemplateGenius\TemplateGenius\Commands\TemplateGeniusCommand;
+use TemplateGenius\TemplateGenius\Commands\SyncTypesCommand;
 
 class TemplateGeniusServiceProvider extends PackageServiceProvider
 {

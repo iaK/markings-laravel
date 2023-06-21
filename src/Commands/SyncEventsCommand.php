@@ -2,15 +2,14 @@
 
 namespace TemplateGenius\TemplateGenius\Commands;
 
-use RegexIterator;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionProperty;
-use Illuminate\Support\Str;
-use RecursiveIteratorIterator;
-use Illuminate\Console\Command;
-use RecursiveDirectoryIterator;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Database\Eloquent\Model;
+use RegexIterator;
 
 class SyncEventsCommand extends Command
 {
@@ -36,7 +35,7 @@ class SyncEventsCommand extends Command
             ->values()
             ->map(function ($file) {
                 $this->comment("Parsing file: $file");
-                
+
                 return $this->parseFile($file);
             })
             ->pipe(function ($events) {
@@ -45,11 +44,11 @@ class SyncEventsCommand extends Command
                 $token = config('template-genius.api_token');
 
                 $result = Http::withHeaders([
-                        'Authorization' => "Bearer $token"
-                    ])
+                    'Authorization' => "Bearer $token",
+                ])
                     ->acceptJson()
                     ->withOptions(['verify' => false])
-                    ->post(rtrim(config('template-genius.api_url'), '/') . '/events/sync', ['events' => $events]);
+                    ->post(rtrim(config('template-genius.api_url'), '/').'/events/sync', ['events' => $events]);
 
                 if ($result->failed()) {
                     $this->error('Sync failed!');
@@ -62,8 +61,8 @@ class SyncEventsCommand extends Command
 
                 return true;
             });
-        
-        if (!$success) {
+
+        if (! $success) {
             return self::FAILURE;
         }
 
@@ -72,14 +71,14 @@ class SyncEventsCommand extends Command
 
     protected function parseFile($file)
     {
-        $class = $this->getClass($file);        
+        $class = $this->getClass($file);
         $columns = $this->getClassFields($class);
-        if (!empty($this->skippedTypes)) {
+        if (! empty($this->skippedTypes)) {
             $types = collect($this->skippedTypes)
                 ->map(fn ($type, $name) => "$name: $type")
                 ->implode(', ');
-                
-            $this->comment('Unknown types found. skipping: ' . $types);
+
+            $this->comment('Unknown types found. skipping: '.$types);
             $this->skippedTypes = [];
         }
 
@@ -88,7 +87,6 @@ class SyncEventsCommand extends Command
             'types' => $columns,
         ];
     }
-
 
     public function getClassFields(ReflectionClass $class)
     {
@@ -112,10 +110,9 @@ class SyncEventsCommand extends Command
             ->toArray();
     }
 
-
     protected function mapInternalType(string $type)
     {
-        return match($type) {
+        return match ($type) {
             'int' => 'integer',
             'float' => 'float',
             'string' => 'string',
@@ -131,8 +128,7 @@ class SyncEventsCommand extends Command
         };
     }
 
-
-    public function getClass($path) : ReflectionClass
+    public function getClass($path): ReflectionClass
     {
         $fileContents = file_get_contents($path);
 

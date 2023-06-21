@@ -8,5 +8,6 @@ use Tests\TestClasses\Models\User;
 class UserCreatedEvent
 {
     public User $coolUser;
+
     public Nested $megaNested;
 }

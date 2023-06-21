@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Orchestra\Testbench\TestCase as Orchestra;
 use TemplateGenius\TemplateGenius\TemplateGeniusServiceProvider;
 
 class TestCase extends Orchestra

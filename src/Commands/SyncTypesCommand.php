@@ -2,20 +2,17 @@
 
 namespace TemplateGenius\TemplateGenius\Commands;
 
-use Carbon\Carbon as CarbonCarbon;
 use DateTime;
-use RegexIterator;
-use ReflectionClass;
-use Doctrine\DBAL\Types\Type;
-use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use RecursiveDirectoryIterator;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionClass;
 use ReflectionProperty;
+use RegexIterator;
 
 class SyncTypesCommand extends Command
 {
@@ -41,7 +38,7 @@ class SyncTypesCommand extends Command
             ->values()
             ->map(function ($file) {
                 $this->comment("Parsing file: $file");
-                
+
                 return $this->parseFile($file);
             })
             ->pipe(function ($types) {
@@ -50,11 +47,11 @@ class SyncTypesCommand extends Command
                 $token = config('template-genius.api_token');
 
                 $result = Http::withHeaders([
-                        'Authorization' => "Bearer $token"
-                    ])
+                    'Authorization' => "Bearer $token",
+                ])
                     ->acceptJson()
                     ->withOptions(['verify' => false])
-                    ->post(rtrim(config('template-genius.api_url'), '/') . '/types', ['types' => $types]);
+                    ->post(rtrim(config('template-genius.api_url'), '/').'/types', ['types' => $types]);
 
                 if ($result->failed()) {
                     $this->error('Sync failed!');
@@ -67,8 +64,8 @@ class SyncTypesCommand extends Command
 
                 return true;
             });
-        
-        if (!$success) {
+
+        if (! $success) {
             return self::FAILURE;
         }
 
@@ -77,7 +74,7 @@ class SyncTypesCommand extends Command
 
     protected function mapType(string $type)
     {
-        return match($type) {
+        return match ($type) {
             'string' => 'string',
             'char' => 'string',
             'varchar' => 'string',
@@ -95,7 +92,7 @@ class SyncTypesCommand extends Command
             'bit' => 'integer',
             'tinyint' => 'boolean',
             'bool' => 'boolean',
-            'boolean'	=> 'boolean',
+            'boolean' => 'boolean',
             'smallint' => 'integer',
             'mediumint' => 'integer',
             'int' => 'integer',
@@ -117,7 +114,7 @@ class SyncTypesCommand extends Command
 
     protected function mapInternalType(string $type)
     {
-        return match($type) {
+        return match ($type) {
             'int' => 'integer',
             'float' => 'float',
             'string' => 'string',
@@ -133,7 +130,7 @@ class SyncTypesCommand extends Command
         };
     }
 
-    public function getClass($path) : ReflectionClass
+    public function getClass($path): ReflectionClass
     {
         $fileContents = file_get_contents($path);
 
@@ -156,7 +153,7 @@ class SyncTypesCommand extends Command
         return new \ReflectionClass($fullClassName);
     }
 
-    public function getEloquentFields(ReflectionClass $class) : array
+    public function getEloquentFields(ReflectionClass $class): array
     {
         $table = (new ($class->getName()))->getTable();
         $columns = Schema::getColumnListing($table);
@@ -182,18 +179,18 @@ class SyncTypesCommand extends Command
 
     public function parseFile(string $file)
     {
-        $class = $this->getClass($file);        
+        $class = $this->getClass($file);
 
         $columns = $class->isSubclassOf(Model::class)
             ? $this->getEloquentFields($class)
             : $this->getClassFields($class);
 
-        if (!empty($this->skippedTypes)) {
+        if (! empty($this->skippedTypes)) {
             $types = collect($this->skippedTypes)
                 ->map(fn ($type, $name) => "$name: $type")
                 ->implode(', ');
-                
-            $this->comment('Unknown types found. skipping: ' . $types);
+
+            $this->comment('Unknown types found. skipping: '.$types);
             $this->skippedTypes = [];
         }
 

@@ -1,7 +1,5 @@
 <?php
 
-use Schema;
-use Tests\TestClasses\Models\User;
 use Illuminate\Support\Facades\Config;
 
 it('can do stuff', function () {
