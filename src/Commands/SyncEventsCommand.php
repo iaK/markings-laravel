@@ -95,7 +95,7 @@ class SyncEventsCommand extends Command
             ->map(function (ReflectionProperty $property) use ($class) {
                 $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
-                if (!$name) {
+                if (! $name) {
                     $this->skippedTypes[$class->getShortName()] = $name;
 
                     return null;

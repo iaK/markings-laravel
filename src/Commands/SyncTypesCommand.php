@@ -3,17 +3,16 @@
 namespace TemplateGenius\TemplateGenius\Commands;
 
 use DateTime;
-use RegexIterator;
-use ReflectionClass;
-use ReflectionProperty;
-use Doctrine\DBAL\Types\Type;
-use Illuminate\Support\Carbon;
-use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
-use RecursiveDirectoryIterator;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionClass;
+use ReflectionProperty;
+use RegexIterator;
 
 class SyncTypesCommand extends Command
 {
@@ -169,10 +168,9 @@ class SyncTypesCommand extends Command
                     return null;
                 }
 
-
                 return [
                     'name' => $column,
-                    'nullable' => !Schema::getConnection()->getDoctrineColumn($table, $column)->getNotnull(),
+                    'nullable' => ! Schema::getConnection()->getDoctrineColumn($table, $column)->getNotnull(),
                     'type' => $type,
                 ];
             })
