@@ -78,7 +78,7 @@ class SyncEventsCommand extends Command
         if ($class->isAbstract()) {
             return false;
         }
-        
+
         if (! empty($this->skippedTypes)) {
             $types = collect($this->skippedTypes)
                 ->map(fn ($type, $name) => "$name: $type")
