@@ -1,12 +1,12 @@
 {
-    "name": "templategenius/template-genius-laravel",
+    "name": "iak/template-genius-laravel",
     "description": "This is my package template-genius-laravel",
     "keywords": [
         "TemplateGenius",
         "laravel",
         "template-genius-laravel"
     ],
-    "homepage": "https://github.com/templategenius/template-genius-laravel",
+    "homepage": "https://github.com/iak/template-genius-laravel",
     "license": "MIT",
     "authors": [
         {

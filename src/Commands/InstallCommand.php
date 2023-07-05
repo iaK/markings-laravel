@@ -20,5 +20,9 @@ class InstallCommand extends Command
         $this->info('That\'s pretty much it! Check the config file to see that your Events and Models paths are correct, and then run:');
         $this->info('php artisan template-genius:sync');
         $this->info('See you later!');
+        $this->call('vendor:publish', [
+            '--tag' => 'template-genius-laravel-config',
+        ]);
+        return self::SUCCESS;
     }
 }
