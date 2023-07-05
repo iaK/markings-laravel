@@ -64,10 +64,7 @@
         "laravel": {
             "providers": [
                 "TemplateGenius\\TemplateGenius\\TemplateGeniusServiceProvider"
-            ],
-            "aliases": {
-                "TemplateGenius": "TemplateGenius\\TemplateGenius\\Facades\\TemplateGenius"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

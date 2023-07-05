@@ -18,7 +18,7 @@ class SyncTypesCommand extends Command
 {
     public $signature = 'template-genius:sync-types';
 
-    public $description = 'My command';
+    public $description = 'Sync all your types to Template Genius';
 
     public array $skippedTypes = [];
 
@@ -35,12 +35,13 @@ class SyncTypesCommand extends Command
                 return collect($files)->map(fn ($file) => $file);
             })
             ->flatten()
-            ->values()
             ->map(function ($file) {
                 $this->comment("Parsing file: $file");
 
                 return $this->parseFile($file);
             })
+            ->filter()
+            ->values()
             ->pipe(function ($types) {
                 $this->comment('Syncing to server..');
 
@@ -181,6 +182,10 @@ class SyncTypesCommand extends Command
     public function parseFile(string $file)
     {
         $class = $this->getClass($file);
+
+        if ($class->isAbstract()) {
+            return false;
+        }
 
         $columns = $class->isSubclassOf(Model::class)
             ? $this->getEloquentFields($class)

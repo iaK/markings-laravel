@@ -15,7 +15,7 @@ class SyncEventsCommand extends Command
 {
     public $signature = 'template-genius:sync-events';
 
-    public $description = 'My command';
+    public $description = 'Sync all your events to Template Genius';
 
     public array $skippedTypes = [];
 
@@ -32,12 +32,13 @@ class SyncEventsCommand extends Command
                 return collect($files)->map(fn ($file) => $file);
             })
             ->flatten()
-            ->values()
             ->map(function ($file) {
                 $this->comment("Parsing file: $file");
 
                 return $this->parseFile($file);
             })
+            ->filter()
+            ->values()
             ->pipe(function ($events) {
                 $this->comment('Syncing to server..');
 
@@ -73,6 +74,11 @@ class SyncEventsCommand extends Command
     {
         $class = $this->getClass($file);
         $columns = $this->getClassFields($class);
+
+        if ($class->isAbstract()) {
+            return false;
+        }
+        
         if (! empty($this->skippedTypes)) {
             $types = collect($this->skippedTypes)
                 ->map(fn ($type, $name) => "$name: $type")
