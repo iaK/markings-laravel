@@ -168,8 +168,10 @@ class SyncTypesCommand extends Command
                     return null;
                 }
 
+
                 return [
                     'name' => $column,
+                    'nullable' => !Schema::getConnection()->getDoctrineColumn($table, $column)->getNotnull(),
                     'type' => $type,
                 ];
             })

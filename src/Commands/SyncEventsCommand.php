@@ -42,7 +42,6 @@ class SyncEventsCommand extends Command
                 $this->comment('Syncing to server..');
 
                 $token = config('template-genius.api_token');
-
                 $result = Http::withHeaders([
                     'Authorization' => "Bearer $token",
                 ])
@@ -50,6 +49,7 @@ class SyncEventsCommand extends Command
                     ->withOptions(['verify' => false])
                     ->post(rtrim(config('template-genius.api_url'), '/').'/events/sync', ['events' => $events]);
 
+                dd($result->body());
                 if ($result->failed()) {
                     $this->error('Sync failed!');
                     $this->error($result->body());
@@ -93,17 +93,23 @@ class SyncEventsCommand extends Command
         return collect($class->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
             ->map(function (ReflectionProperty $property) use ($class) {
-                $type = Str::of($property->getType()?->getName())->afterLast('\\')->toString() ?: 'string';
+                $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
-                if (is_null($type)) {
-                    $this->skippedTypes[$class->getShortName()] = $type;
+                if (!$name) {
+                    $this->skippedTypes[$class->getShortName()] = $name;
 
                     return null;
                 }
 
+                $type = $property->getType()->isBuiltin()
+                    ? $this->mapInternalType($property->getType()?->getName())
+                    : $name;
+
                 return [
-                    'name' => $type,
+                    'name' => $name,
                     'as' => $property->getName(),
+                    'type' => $property->getType()->isBuiltin() ? $type : 'custom',
+                    'nullable' => $property->getType()?->allowsNull(),
                 ];
             })
             ->filter()
