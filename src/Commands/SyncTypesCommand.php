@@ -2,20 +2,21 @@
 
 namespace TemplateGenius\TemplateGenius\Commands;
 
-use Carbon\Carbon as CarbonCarbon;
 use DateTime;
 use RegexIterator;
 use ReflectionClass;
+use ReflectionProperty;
 use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Carbon;
 use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use RecursiveDirectoryIterator;
+use Carbon\Carbon as CarbonCarbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
-use ReflectionProperty;
+use Illuminate\Database\Eloquent\Model;
 
 class SyncTypesCommand extends Command
 {
@@ -171,8 +172,10 @@ class SyncTypesCommand extends Command
                     return null;
                 }
 
+
                 return [
                     'name' => $column,
+                    'nullable' => !Schema::getConnection()->getDoctrineColumn($table, $column)->getNotnull(),
                     'type' => $type,
                 ];
             })

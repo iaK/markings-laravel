@@ -6,5 +6,5 @@ return [
     'events_paths' => ['app/Events'],
     'project_id' => 1,
     'api_url' => 'https://mail-template.test/api/v1/',
-    'api_token' => '8|0DVKcfTNbWTdd6bfjrYtW8pY1y02oPUIpWSNpUTF',
+    'api_token' => '1|yIjGNeOkaQWodA9qEhQ8DRVVosYxog0qtSjFsE4E',
 ];
