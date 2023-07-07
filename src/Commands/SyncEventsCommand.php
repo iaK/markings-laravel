@@ -62,7 +62,7 @@ class SyncEventsCommand extends Command
 
                 $this->comment('Sync successful!');
 
-                Storage::put('template-genius-events.json', json_encode($events));
+                Storage::put('template-genius-events.json', json_encode($this->events));
 
                 return true;
             });
