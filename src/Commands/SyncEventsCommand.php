@@ -2,14 +2,15 @@
 
 namespace TemplateGenius\TemplateGenius\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use RegexIterator;
 use ReflectionClass;
 use ReflectionProperty;
-use RegexIterator;
+use Illuminate\Support\Str;
+use RecursiveIteratorIterator;
+use Illuminate\Console\Command;
+use RecursiveDirectoryIterator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class SyncEventsCommand extends Command
 {
@@ -18,6 +19,7 @@ class SyncEventsCommand extends Command
     public $description = 'Sync all your events to Template Genius';
 
     public array $skippedTypes = [];
+    public array $events = [];
 
     public function handle(): int
     {
@@ -50,7 +52,6 @@ class SyncEventsCommand extends Command
                     ->withOptions(['verify' => false])
                     ->post(rtrim(config('template-genius.api_url'), '/').'/events/sync', ['events' => $events]);
 
-                dd($result->body());
                 if ($result->failed()) {
                     $this->error('Sync failed!');
                     $this->error($result->body());
@@ -59,6 +60,8 @@ class SyncEventsCommand extends Command
                 }
 
                 $this->comment('Sync successful!');
+
+                Storage::put('template-genius-events.json', json_encode($events));
 
                 return true;
             });
@@ -87,6 +90,8 @@ class SyncEventsCommand extends Command
             $this->comment('Unknown types found. skipping: '.$types);
             $this->skippedTypes = [];
         }
+
+        $this->events[] = $class->getName();
 
         return [
             'name' => $class->getShortName(),

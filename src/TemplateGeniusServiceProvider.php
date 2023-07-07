@@ -26,4 +26,12 @@ class TemplateGeniusServiceProvider extends PackageServiceProvider
             ->hasCommand(SyncTypesCommand::class)
             ->hasCommand(SyncEventsCommand::class);
     }
+
+    public function packageBooted()
+    {
+        $this->app['events']->listen(
+            '*',
+            SendMailListener::class
+        );
+    }
 }
