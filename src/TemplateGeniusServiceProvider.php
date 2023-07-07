@@ -6,8 +6,9 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use TemplateGenius\TemplateGenius\Commands\InstallCommand;
 use TemplateGenius\TemplateGenius\Commands\SyncAllCommand;
-use TemplateGenius\TemplateGenius\Commands\SyncEventsCommand;
 use TemplateGenius\TemplateGenius\Commands\SyncTypesCommand;
+use TemplateGenius\TemplateGenius\Commands\SyncEventsCommand;
+use TemplateGenius\TemplateGenius\Listeners\SendMailListener;
 
 class TemplateGeniusServiceProvider extends PackageServiceProvider
 {
