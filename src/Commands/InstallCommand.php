@@ -28,7 +28,7 @@ class InstallCommand extends Command
         $this->newLine();
         $token = $this->ask('Paste your access token here:');
         $this->newLine();
-        File::append(base_path('.env'), 'TEMPLATE_GENIUS_API_TOKEN="' . $token . '"');
+        File::append(base_path('.env'), 'TEMPLATE_GENIUS_API_TOKEN="'.$token.'"');
         $this->info('Great! We\'ve added the token to your .env file.');
         $this->newLine();
         $this->confirm('Now, make sure the paths in your config file (template-genius.php) are correct. Update if necessary, and then press enter to continue.', true);
