@@ -15,6 +15,6 @@ class SyncAllCommand extends Command
         $this->call('template-genius:sync-types');
         $this->call('template-genius:sync-events');
 
-        return 0;
+        return self::SUCCESS;
     }
 }
