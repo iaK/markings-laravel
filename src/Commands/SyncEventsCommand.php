@@ -2,15 +2,15 @@
 
 namespace TemplateGenius\TemplateGenius\Commands;
 
-use RegexIterator;
-use ReflectionClass;
-use ReflectionProperty;
-use Illuminate\Support\Str;
-use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
-use RecursiveDirectoryIterator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionClass;
+use ReflectionProperty;
+use RegexIterator;
 
 class SyncEventsCommand extends Command
 {
@@ -19,6 +19,7 @@ class SyncEventsCommand extends Command
     public $description = 'Sync all your events to Template Genius';
 
     public array $skippedTypes = [];
+
     public array $events = [];
 
     public function handle(): int

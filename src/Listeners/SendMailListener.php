@@ -2,13 +2,13 @@
 
 namespace TemplateGenius\TemplateGenius\Listeners;
 
-use ReflectionClass;
-use ReflectionProperty;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use ReflectionClass;
+use ReflectionProperty;
 
 class SendMailListener
 {
@@ -16,7 +16,7 @@ class SendMailListener
     {
         $events = Storage::get('template-genius-events.json');
 
-        if (!$events) {
+        if (! $events) {
             return;
         }
 
@@ -40,9 +40,9 @@ class SendMailListener
             ->withOptions(['verify' => false])
             ->post(rtrim(config('template-genius.api_url'), '/').'/events', [
                 'event' => str($event)->afterLast('\\'),
-                'types' => $types
+                'types' => $types,
             ]);
-        
+
         if ($result->failed()) {
             throw new \Exception('Sync failed!');
         }
@@ -54,7 +54,7 @@ class SendMailListener
 
         return collect($reflectionClass->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
-            ->map(function (ReflectionProperty $property) use ($reflectionClass, $class, $nested) {
+            ->map(function (ReflectionProperty $property) use ($class, $nested) {
                 $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
                 if ($property->getType()?->isBuiltin()) {
@@ -86,7 +86,6 @@ class SendMailListener
             : $this->getClassFields($instance, true);
     }
 
-
     public function getEloquentFields($class): array
     {
         $reflectionClass = new ReflectionClass($class);
@@ -94,7 +93,7 @@ class SendMailListener
         $columns = Schema::getColumnListing($table);
 
         return collect($columns)
-            ->map(function ($column) use ($table, $class) {
+            ->map(function ($column) use ($class) {
                 return [
                     'name' => $column,
                     'value' => $class->{$column},
@@ -103,7 +102,6 @@ class SendMailListener
             ->filter()
             ->toArray();
     }
-
 
     protected function mapType(string $type)
     {
