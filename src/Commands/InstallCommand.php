@@ -28,12 +28,12 @@ class InstallCommand extends Command
         $this->newLine();
         $token = $this->ask('Paste your access token here:');
         $this->newLine();
-        File::append(base_path('.env'), 'TEMPLATE_GENIUS_API_TOKEN='.$token);
+        File::append(base_path('.env'), 'TEMPLATE_GENIUS_API_TOKEN="' . $token . '"');
         $this->info('Great! We\'ve added the token to your .env file.');
         $this->newLine();
-        $this->confirm('Now, make sure the paths in your config file (template-genius.php) are correct. Update if necessary, and then press enter to continue.');
+        $this->confirm('Now, make sure the paths in your config file (template-genius.php) are correct. Update if necessary, and then press enter to continue.', true);
         $this->newLine();
-        if ($this->confirm('Awesome! All thats left is to sync your types & events. Should we do that for you?')) {
+        if ($this->confirm('Awesome! All thats left is to sync your types & events. Should we do that for you?', true)) {
             $this->call('template-genius:sync');
         } else {
             $this->info('No problem! You can run the sync command using \'php artisan template-genius:sync\' whenever you\'re ready.');
