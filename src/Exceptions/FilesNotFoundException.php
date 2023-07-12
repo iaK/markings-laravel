@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings\Exceptions;
+namespace Markings\Exceptions;
 
 use Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings\Commands;
+namespace Markings\Commands;
 
 use Illuminate\Console\Command;
 

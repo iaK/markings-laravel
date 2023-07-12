@@ -1,6 +1,6 @@
 <?php
 
-use Markings\Markings\Actions\PpoFieldParserAction;
+use Markings\Actions\PpoFieldParserAction;
 use Tests\TestClasses\DataTransferObjects\Order;
 
 it('it can parse fields', function () {

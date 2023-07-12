@@ -1,6 +1,6 @@
 <?php
 
-use Markings\Markings\Actions\EloquentFieldParserAction;
+use Markings\Actions\EloquentFieldParserAction;
 use Tests\TestClasses\Models\User;
 
 it('it_can_parse_fields', function () {

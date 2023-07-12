@@ -1,7 +1,7 @@
 <?php
 
 use Tests\TestClasses\DataTransferObjects\Order;
-use Markings\Markings\Actions\PpoFieldFinderAction;
+use Markings\Actions\PpoFieldFinderAction;
 
 it('can find fields', function () {
     [$fields, $skippedFields] = PpoFieldFinderAction::make()->handle(

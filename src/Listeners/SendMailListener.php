@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings\Listeners;
+namespace Markings\Listeners;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;

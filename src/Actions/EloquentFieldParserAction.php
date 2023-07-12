@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings\Actions;
+namespace Markings\Actions;
 
 use ReflectionClass;
 use Illuminate\Support\Facades\Schema;

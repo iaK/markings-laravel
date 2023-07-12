@@ -1,6 +1,6 @@
 <?php
 
-use Markings\Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Actions\GetFilesInGlobPatternAction;
 
 it('can get all files in a folder', function () {
     $files = GetFilesInGlobPatternAction::make()->handle(__DIR__.'/../TestClasses/GlobFiles');

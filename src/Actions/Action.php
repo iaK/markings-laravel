@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings\Actions;
+namespace Markings\Actions;
 
 use Mockery;
 use ReflectionClass;

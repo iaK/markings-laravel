@@ -1,10 +1,10 @@
 <?php
 
-namespace Markings\Markings\Actions;
+namespace Markings\Actions;
 
 use ReflectionClass;
 use ReflectionProperty;
-use Markings\Markings\Actions\Action;
+use Markings\Actions\Action;
 
 class PpoFieldParserAction extends Action
 {

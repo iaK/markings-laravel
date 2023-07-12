@@ -1,21 +1,21 @@
 <?php
 
-namespace Markings\Markings\Commands;
+namespace Markings\Commands;
 
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Markings\Markings\Actions\Api;
-use Markings\Markings\Actions\PpoFieldFinderAction;
-use Markings\Markings\Actions\FindClassFromPathAction;
-use Markings\Markings\Exceptions\FilesNotFoundException;
-use Markings\Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Actions\Api;
+use Markings\Actions\PpoFieldFinderAction;
+use Markings\Actions\FindClassFromPathAction;
+use Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\GetFilesInGlobPatternAction;
 
 class SyncEventsCommand extends Command
 {
     public $signature = 'markings:sync-events';
 
-    public $description = 'Sync all your events to Template Genius';
+    public $description = 'Sync all your events to Markings';
 
     public array $events = [];
 

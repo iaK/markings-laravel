@@ -3,8 +3,8 @@
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
-use Markings\Markings\Exceptions\FilesNotFoundException;
-use Markings\Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\GetFilesInGlobPatternAction;
 
 it('can sync events', function () {
     Config::set('markings.events_paths', ['tests/TestClasses/Events']);

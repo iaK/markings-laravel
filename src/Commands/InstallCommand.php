@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings\Commands;
+namespace Markings\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -9,7 +9,7 @@ class InstallCommand extends Command
 {
     public $signature = 'markings:install';
 
-    public $description = 'Install Template Genius into your codebase';
+    public $description = 'Install Markings into your codebase';
 
     public function handle(): int
     {
@@ -25,13 +25,13 @@ class InstallCommand extends Command
         $this->call('vendor:publish', [
             '--tag' => 'markings-config',
         ]);
-        $this->info('Welcome to Template Genius!');
+        $this->info('Welcome to Markings!');
         $this->newLine();
         $this->info('To get started, you\'ll need an access token. Head over to https://markings.com/settings to generate one.');
         $this->newLine();
         $token = $this->ask('Paste your access token here:');
         $this->newLine();
-        File::append(base_path('.env'), 'TEMPLATE_GENIUS_API_TOKEN="'.$token.'"');
+        File::append(base_path('.env'), 'MARKINGS_API_TOKEN="'.$token.'"');
         $this->info('Great! We\'ve added the token to your .env file.');
         $this->newLine();
         $this->confirm('Now, make sure the paths in your config file (markings.php) are correct. Update if necessary, and then press enter to continue.', true);

@@ -1,12 +1,12 @@
 <?php
 
-namespace Markings\Markings\Actions;
+namespace Markings\Actions;
 
 use DateTime;
 use ReflectionProperty;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use Markings\Markings\Actions\Action;
+use Markings\Actions\Action;
 
 class PpoFieldFinderAction extends Action
 {

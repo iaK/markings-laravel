@@ -1,13 +1,13 @@
 <?php
 
-namespace Markings\Markings\Actions;
+namespace Markings\Actions;
 
 use Illuminate\Support\Collection;
 use RegexIterator;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use Markings\Markings\Actions\Action;
-use Markings\Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\Action;
+use Markings\Exceptions\FilesNotFoundException;
 
 class GetFilesInGlobPatternAction extends Action
 {

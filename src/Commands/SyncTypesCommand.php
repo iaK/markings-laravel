@@ -1,21 +1,21 @@
 <?php
 
-namespace Markings\Markings\Commands;
+namespace Markings\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Markings\Markings\Actions\Api;
-use Markings\Markings\Actions\PpoFieldParserAction;
-use Markings\Markings\Actions\FindClassFromPathAction;
-use Markings\Markings\Actions\EloquentFieldParserAction;
-use Markings\Markings\Exceptions\FilesNotFoundException;
-use Markings\Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Actions\Api;
+use Markings\Actions\PpoFieldParserAction;
+use Markings\Actions\FindClassFromPathAction;
+use Markings\Actions\EloquentFieldParserAction;
+use Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\GetFilesInGlobPatternAction;
 
 class SyncTypesCommand extends Command
 {
     public $signature = 'markings:sync-types';
 
-    public $description = 'Sync all your types to Template Genius';
+    public $description = 'Sync all your types to Markings';
 
     public array $skippedTypes = [];
 
