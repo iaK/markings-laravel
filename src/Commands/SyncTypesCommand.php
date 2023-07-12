@@ -2,11 +2,12 @@
 
 namespace Markings\Commands;
 
+use ReflectionClass;
+use Markings\Actions\Api;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Markings\Actions\Api;
-use Markings\Actions\EloquentFieldParserAction;
 use Markings\Actions\FindClassFromPathAction;
+use Markings\Actions\EloquentFieldParserAction;
 use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PpoFieldParserAction;
 use Markings\Exceptions\FilesNotFoundException;
@@ -27,11 +28,18 @@ class SyncTypesCommand extends Command
             $success = collect(config('markings.types_paths'))
                 ->map(fn ($path) => GetFilesInGlobPatternAction::make()->handle($path))
                 ->flatten()
-                ->map(function ($file) {
-                    $this->comment("Parsing file: $file");
+                ->map(fn ($file) => FindClassFromPathAction::make()->handle($file))
+                ->reject(function (ReflectionClass $class) {
+                    if (in_array($class->getName(), config('markings.exclude_files'))) {
+                        $this->comment('Skipping class: ' . $class->getName());
+                        return true;
+                    }
 
-                    return $this->parseFile($file);
+                    $this->comment("Parsing class: " . $class->getName());
+
+                    return false;
                 })
+                ->map(fn (ReflectionClass $class) => $this->parseFile($class))
                 ->filter()
                 ->values()
                 ->pipe(function ($types) {
@@ -68,10 +76,8 @@ class SyncTypesCommand extends Command
         return self::SUCCESS;
     }
 
-    public function parseFile(string $file)
+    public function parseFile(ReflectionClass $class)
     {
-        $class = FindClassFromPathAction::make()->handle($file);
-
         if ($class->isAbstract()) {
             return false;
         }

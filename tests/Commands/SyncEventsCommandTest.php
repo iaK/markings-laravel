@@ -13,7 +13,7 @@ it('can sync events', function () {
 
     $this->artisan('markings:sync-events')
         ->expectsOutput('Event Sync started..')
-        ->expectsOutput('Parsing file: tests/TestClasses/Events/UserCreatedEvent.php')
+        ->expectsOutput('Parsing class: Tests\TestClasses\Events\UserCreatedEvent')
         ->expectsOutput('Unknown types found. skipping: UserCreatedEvent: callback')
         ->expectsOutput('Syncing to server..')
         ->expectsOutput('Sync successful!');
@@ -60,7 +60,7 @@ it('fails if the request fails', function () {
 
     $this->artisan('markings:sync-events')
         ->expectsOutput('Event Sync started..')
-        ->expectsOutput('Parsing file: tests/TestClasses/Events/UserCreatedEvent.php')
+        ->expectsOutput('Parsing class: Tests\TestClasses\Events\UserCreatedEvent')
         ->expectsOutput('Unknown types found. skipping: UserCreatedEvent: callback')
         ->expectsOutput('Syncing to server..')
         ->expectsOutput('There was an unexpected error when calling the server. Error message:')
@@ -89,4 +89,23 @@ it('gives a somewhat helpful error message if an unexpected error occurs', funct
         ->expectsOutput('Event Sync started..')
         ->expectsOutput('There was an unexpected error. Error message: Something went wrong')
         ->assertExitCode(1);
+}); 
+
+it('excludes the files in the config', function () {
+    Config::set('markings.events_paths', ['tests/TestClasses/Events']);
+    Config::set('markings.exclude_files', ['Tests\TestClasses\Events\UserCreatedEvent']);
+
+    Http::fake();
+    
+    $this->artisan('markings:sync-events')
+        ->expectsOutput('Event Sync started..')
+        ->expectsOutput('Skipping class: Tests\TestClasses\Events\UserCreatedEvent')
+        ->expectsOutput('Syncing to server..')
+        ->expectsOutput('Sync successful!');
+    
+    Http::assertSent(function (Request $request) {
+        expect($request->body())->toBe('{"events":[]}');
+
+        return true;
+    });
 });

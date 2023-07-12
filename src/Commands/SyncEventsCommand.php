@@ -2,13 +2,14 @@
 
 namespace Markings\Commands;
 
+use ReflectionClass;
+use Markings\Actions\Api;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Markings\Actions\Api;
-use Markings\Actions\FindClassFromPathAction;
-use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PpoFieldFinderAction;
+use Markings\Actions\FindClassFromPathAction;
 use Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\GetFilesInGlobPatternAction;
 
 class SyncEventsCommand extends Command
 {
@@ -26,11 +27,18 @@ class SyncEventsCommand extends Command
             $success = collect(config('markings.events_paths'))
                 ->map(fn ($path) => GetFilesInGlobPatternAction::make()->handle($path))
                 ->flatten()
-                ->map(function ($file) {
-                    $this->comment("Parsing file: $file");
+                ->map(fn ($file) => FindClassFromPathAction::make()->handle($file))
+                ->reject(function (ReflectionClass $class) {
+                    if (in_array($class->getName(), config('markings.exclude_files'))) {
+                        $this->comment('Skipping class: ' . $class->getName());
+                        return true;
+                    }
 
-                    return $this->parseFile($file);
+                    $this->comment("Parsing class: " . $class->getName());
+
+                    return false;
                 })
+                ->map(fn (ReflectionClass $class) => $this->parseFile($class))
                 ->filter()
                 ->values()
                 ->pipe(function ($events) {
@@ -69,9 +77,8 @@ class SyncEventsCommand extends Command
         return self::SUCCESS;
     }
 
-    protected function parseFile($file)
+    protected function parseFile(ReflectionClass $class)
     {
-        $class = FindClassFromPathAction::make()->handle($file);
         [$columns, $skippedTypes] = PpoFieldFinderAction::make()->handle($class);
 
         if ($class->isAbstract()) {

@@ -13,8 +13,8 @@ it('can do sync types', function () {
 
     $this->artisan('markings:sync-types')
         ->expectsOutput('Type sync started..')
-        ->expectsOutput('Parsing file: tests/TestClasses/Models/User.php')
-        ->expectsOutput('Parsing file: tests/TestClasses/Models/Nested/Nested.php')
+        ->expectsOutput('Parsing class: Tests\TestClasses\Models\User')
+        ->expectsOutput('Parsing class: Tests\TestClasses\Models\Nested\Nested')
         ->expectsOutput('Unknown types found. skipping: Nested: closure')
         ->expectsOutput('Syncing to server..')
         ->expectsOutput('Sync successful!');
@@ -65,8 +65,8 @@ it('fails if the request fails', function () {
 
     $this->artisan('markings:sync-types')
         ->expectsOutput('Type sync started..')
-        ->expectsOutput('Parsing file: tests/TestClasses/Models/User.php')
-        ->expectsOutput('Parsing file: tests/TestClasses/Models/Nested/Nested.php')
+        ->expectsOutput('Parsing class: Tests\TestClasses\Models\User')
+        ->expectsOutput('Parsing class: Tests\TestClasses\Models\Nested\Nested')
         ->expectsOutput('Unknown types found. skipping: Nested: closure')
         ->expectsOutput('Syncing to server..')
         ->expectsOutput('There was an unexpected error when calling the server. Error message:')
@@ -95,4 +95,24 @@ it('gives a somewhat helpful error message if an unexpected error occurs', funct
         ->expectsOutput('Event Sync started..')
         ->expectsOutput('There was an unexpected error. Error message: Something went wrong')
         ->assertExitCode(1);
+}); 
+
+it('excludes the files in the config', function () {
+    Config::set('markings.types_paths', ['tests/TestClasses/Models']);
+    Config::set('markings.exclude_files', ['Tests\TestClasses\Models\User']);
+
+    Http::fake();
+    
+    $this->artisan('markings:sync-types')
+        ->expectsOutput('Skipping class: Tests\TestClasses\Models\User')
+        ->expectsOutput('Syncing to server..')
+        ->expectsOutput('Sync successful!');
+    
+    Http::assertSent(function (Request $request) {
+        $types = json_decode($request->body(), true);
+
+        expect($types)->toHaveCount(1);
+
+        return true;
+    });
 });
