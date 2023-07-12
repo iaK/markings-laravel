@@ -2,14 +2,13 @@
 
 namespace Markings\Commands;
 
-
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Markings\Actions\Api;
-use Markings\Actions\PpoFieldFinderAction;
 use Markings\Actions\FindClassFromPathAction;
-use Markings\Exceptions\FilesNotFoundException;
 use Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Actions\PpoFieldFinderAction;
+use Markings\Exceptions\FilesNotFoundException;
 
 class SyncEventsCommand extends Command
 {
@@ -29,35 +28,37 @@ class SyncEventsCommand extends Command
                 ->flatten()
                 ->map(function ($file) {
                     $this->comment("Parsing file: $file");
-    
+
                     return $this->parseFile($file);
                 })
                 ->filter()
                 ->values()
                 ->pipe(function ($events) {
                     $this->comment('Syncing to server..');
-    
+
                     $result = Api::syncEvents($events);
-                    
+
                     if ($result->failed()) {
                         $this->error('There was an unexpected error when calling the server. Error message:');
                         $this->error($result->body());
                         $this->error('Sync failed!');
-    
+
                         return false;
                     }
-    
+
                     $this->comment('Sync successful!');
-    
+
                     Storage::put('markings-events.json', json_encode($this->events));
-    
+
                     return true;
                 });
         } catch (FilesNotFoundException $e) {
             $this->error($e->getMessage());
+
             return self::FAILURE;
         } catch (\Exception $e) {
             $this->error('There was an unexpected error. Error message: '.$e->getMessage());
+
             return self::FAILURE;
         }
 

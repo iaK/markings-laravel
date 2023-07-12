@@ -42,4 +42,3 @@ it('skips types id doesnt recognize', function () {
 
     $this->assertEquals(['Order' => 'user'], $skippedFields);
 });
-

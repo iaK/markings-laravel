@@ -2,16 +2,16 @@
 
 namespace Markings\Actions;
 
-use Mockery;
-use ReflectionClass;
-use Mockery\MockInterface;
-use Illuminate\Support\Str;
-use Mockery\LegacyMockInterface;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
+use Mockery;
+use Mockery\LegacyMockInterface;
+use Mockery\MockInterface;
+use ReflectionClass;
 
 abstract class Action
 {
-    public static function fake(): MockInterface | LegacyMockInterface
+    public static function fake(): MockInterface|LegacyMockInterface
     {
         return tap(Mockery::mock(static::class), function ($mock) {
             App::instance(
@@ -31,6 +31,7 @@ abstract class Action
 
     /**
      * @debt-checked - CB-1112
+     *
      * @deprecated Use Action::make()->handle() instead.
      */
     public static function execute()
@@ -47,7 +48,7 @@ abstract class Action
 
     public function slug(): string
     {
-        return (string)Str::of(static::class)
+        return (string) Str::of(static::class)
             ->afterLast('\\')
             ->kebab();
     }

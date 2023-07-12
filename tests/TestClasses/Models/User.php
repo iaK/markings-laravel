@@ -11,6 +11,7 @@ class User extends Model
     use HasFactory;
 
     public $appends = ['full_name', 'fuller_name'];
+
     public $hidden = ['password'];
 
     public function getFullerNameAttribute()

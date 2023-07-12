@@ -8,7 +8,7 @@ class Api
 {
     public function __construct()
     {
-        
+
     }
 
     public static function syncEvents($events)

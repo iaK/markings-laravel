@@ -3,16 +3,15 @@
 namespace Markings\Actions;
 
 use DateTime;
-use ReflectionProperty;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use Markings\Actions\Action;
+use ReflectionProperty;
 
 class PpoFieldFinderAction extends Action
 {
     public array $skippedTypes = [];
 
-    public function handle(ReflectionClass $class) : array
+    public function handle(ReflectionClass $class): array
     {
         $fields = collect($class->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())

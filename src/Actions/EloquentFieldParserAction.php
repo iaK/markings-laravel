@@ -2,8 +2,8 @@
 
 namespace Markings\Actions;
 
-use ReflectionClass;
 use Illuminate\Support\Facades\Schema;
+use ReflectionClass;
 
 class EloquentFieldParserAction extends Action
 {
@@ -19,9 +19,9 @@ class EloquentFieldParserAction extends Action
                 if (in_array($column, (new $class->name)->hidden)) {
                     return null;
                 }
-                
+
                 $type = $this->mapType(Schema::getColumnType($table, $column));
-                
+
                 if (is_null($type)) {
                     $this->skippedTypes[$class->getShortName()] = $column;
 
@@ -37,7 +37,7 @@ class EloquentFieldParserAction extends Action
             ->filter()
             ->values()
             ->toArray();
-        
+
         return [$fields, $this->skippedTypes];
     }
 

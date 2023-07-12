@@ -5,11 +5,11 @@ namespace Markings\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Markings\Actions\Api;
-use Markings\Actions\PpoFieldParserAction;
-use Markings\Actions\FindClassFromPathAction;
 use Markings\Actions\EloquentFieldParserAction;
-use Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\FindClassFromPathAction;
 use Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Actions\PpoFieldParserAction;
+use Markings\Exceptions\FilesNotFoundException;
 
 class SyncTypesCommand extends Command
 {
@@ -29,33 +29,35 @@ class SyncTypesCommand extends Command
                 ->flatten()
                 ->map(function ($file) {
                     $this->comment("Parsing file: $file");
-    
+
                     return $this->parseFile($file);
                 })
                 ->filter()
                 ->values()
                 ->pipe(function ($types) {
                     $this->comment('Syncing to server..');
-    
+
                     $result = Api::syncTypes($types);
-    
+
                     if ($result->failed()) {
                         $this->error('There was an unexpected error when calling the server. Error message:');
                         $this->error($result->body());
                         $this->error('Sync failed!');
-    
+
                         return false;
                     }
-    
+
                     $this->comment('Sync successful!');
-    
+
                     return true;
                 });
         } catch (FilesNotFoundException $e) {
             $this->error($e->getMessage());
+
             return self::FAILURE;
         } catch (\Exception $e) {
             $this->error('There was an unexpected error. Error message: '.$e->getMessage());
+
             return self::FAILURE;
         }
 

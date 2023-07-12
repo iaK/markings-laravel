@@ -1,16 +1,16 @@
 <?php
 
 use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
-use Markings\Exceptions\FilesNotFoundException;
+use Illuminate\Support\Facades\Http;
 use Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Exceptions\FilesNotFoundException;
 
 it('can do sync types', function () {
     Config::set('markings.types_paths', ['tests/TestClasses/Models']);
 
     Http::fake();
-    
+
     $this->artisan('markings:sync-types')
         ->expectsOutput('Type sync started..')
         ->expectsOutput('Parsing file: tests/TestClasses/Models/User.php')
@@ -18,7 +18,6 @@ it('can do sync types', function () {
         ->expectsOutput('Unknown types found. skipping: Nested: closure')
         ->expectsOutput('Syncing to server..')
         ->expectsOutput('Sync successful!');
-    
 
     Http::assertSent(function (Request $request) {
         $types = json_decode($request->body(), true);
@@ -57,14 +56,13 @@ it('can do sync types', function () {
     });
 });
 
-
 it('fails if the request fails', function () {
     Config::set('markings.types_paths', ['tests/TestClasses/Models']);
 
     Http::fake([
         '*' => Http::response('error', 500),
     ]);
-    
+
     $this->artisan('markings:sync-types')
         ->expectsOutput('Type sync started..')
         ->expectsOutput('Parsing file: tests/TestClasses/Models/User.php')
@@ -97,4 +95,4 @@ it('gives a somewhat helpful error message if an unexpected error occurs', funct
         ->expectsOutput('Event Sync started..')
         ->expectsOutput('There was an unexpected error. Error message: Something went wrong')
         ->assertExitCode(1);
-}); 
+});

@@ -6,7 +6,7 @@ use ReflectionClass;
 
 class FindClassFromPathAction extends Action
 {
-    public function handle(string $path) : ReflectionClass
+    public function handle(string $path): ReflectionClass
     {
         $fileContents = file_get_contents($path);
 

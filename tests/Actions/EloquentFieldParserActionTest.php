@@ -41,7 +41,7 @@ it('it_can_parse_fields', function () {
     ]);
 });
 
-it('does not include hidden fields', function() {
+it('does not include hidden fields', function () {
     [$fields, $skippedFields] = EloquentFieldParserAction::make()->handle(
         new ReflectionClass(User::class)
     );

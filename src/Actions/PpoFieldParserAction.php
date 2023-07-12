@@ -4,13 +4,12 @@ namespace Markings\Actions;
 
 use ReflectionClass;
 use ReflectionProperty;
-use Markings\Actions\Action;
 
 class PpoFieldParserAction extends Action
 {
     public array $skippedTypes = [];
 
-    public function handle(ReflectionClass $class) : array
+    public function handle(ReflectionClass $class): array
     {
         $fields = collect($class->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())

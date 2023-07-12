@@ -2,13 +2,13 @@
 
 namespace Markings;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Markings\Commands\InstallCommand;
 use Markings\Commands\SyncAllCommand;
 use Markings\Commands\SyncEventsCommand;
 use Markings\Commands\SyncTypesCommand;
 use Markings\Listeners\SendMailListener;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class MarkingsServiceProvider extends PackageServiceProvider
 {

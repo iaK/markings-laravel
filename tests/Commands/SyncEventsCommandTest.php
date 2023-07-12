@@ -1,23 +1,23 @@
 <?php
 
 use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
-use Markings\Exceptions\FilesNotFoundException;
+use Illuminate\Support\Facades\Http;
 use Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Exceptions\FilesNotFoundException;
 
 it('can sync events', function () {
     Config::set('markings.events_paths', ['tests/TestClasses/Events']);
 
     Http::fake();
-    
+
     $this->artisan('markings:sync-events')
         ->expectsOutput('Event Sync started..')
         ->expectsOutput('Parsing file: tests/TestClasses/Events/UserCreatedEvent.php')
         ->expectsOutput('Unknown types found. skipping: UserCreatedEvent: callback')
         ->expectsOutput('Syncing to server..')
         ->expectsOutput('Sync successful!');
-    
+
     Http::assertSent(function (Request $request) {
         $types = json_decode($request->body(), true);
 
@@ -57,7 +57,7 @@ it('fails if the request fails', function () {
     Http::fake([
         '*' => Http::response('error', 500),
     ]);
-    
+
     $this->artisan('markings:sync-events')
         ->expectsOutput('Event Sync started..')
         ->expectsOutput('Parsing file: tests/TestClasses/Events/UserCreatedEvent.php')
@@ -89,4 +89,4 @@ it('gives a somewhat helpful error message if an unexpected error occurs', funct
         ->expectsOutput('Event Sync started..')
         ->expectsOutput('There was an unexpected error. Error message: Something went wrong')
         ->assertExitCode(1);
-}); 
+});
