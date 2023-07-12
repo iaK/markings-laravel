@@ -1,19 +1,19 @@
 <?php
 
-namespace TemplateGenius\TemplateGenius\Commands;
+namespace Markings\Markings\Commands;
 
 use Illuminate\Console\Command;
 
 class SyncAllCommand extends Command
 {
-    public $signature = 'template-genius:sync';
+    public $signature = 'markings:sync';
 
     public $description = 'Sync both Types and Events';
 
     public function handle(): int
     {
-        $this->call('template-genius:sync-types');
-        $this->call('template-genius:sync-events');
+        $this->call('markings:sync-types');
+        $this->call('markings:sync-events');
 
         return self::SUCCESS;
     }

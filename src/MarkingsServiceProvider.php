@@ -1,16 +1,16 @@
 <?php
 
-namespace TemplateGenius\TemplateGenius;
+namespace Markings\Markings;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use TemplateGenius\TemplateGenius\Commands\InstallCommand;
-use TemplateGenius\TemplateGenius\Commands\SyncAllCommand;
-use TemplateGenius\TemplateGenius\Commands\SyncEventsCommand;
-use TemplateGenius\TemplateGenius\Commands\SyncTypesCommand;
-use TemplateGenius\TemplateGenius\Listeners\SendMailListener;
+use Markings\Markings\Commands\InstallCommand;
+use Markings\Markings\Commands\SyncAllCommand;
+use Markings\Markings\Commands\SyncEventsCommand;
+use Markings\Markings\Commands\SyncTypesCommand;
+use Markings\Markings\Listeners\SendMailListener;
 
-class TemplateGeniusServiceProvider extends PackageServiceProvider
+class MarkingsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -20,7 +20,7 @@ class TemplateGeniusServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('template-genius')
+            ->name('markings-laravel')
             ->hasConfigFile()
             ->hasCommand(InstallCommand::class)
             ->hasCommand(SyncAllCommand::class)

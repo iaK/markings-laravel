@@ -9,9 +9,11 @@ class UserCreatedEvent
 {
     public User $coolUser;
 
-    public Nested $megaNested;
+    public ?Nested $megaNested;
 
     public int $name;
 
     public $noType;
+
+    public \Closure $callback;
 }

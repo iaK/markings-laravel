@@ -1,6 +1,6 @@
 <?php
 
-namespace TemplateGenius\TemplateGenius\Listeners;
+namespace Markings\Markings\Listeners;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +14,7 @@ class SendMailListener
 {
     public function handle($event, $data)
     {
-        $events = Storage::get('template-genius-events.json');
+        $events = Storage::get('markings-events.json');
 
         if (! $events) {
             return;
@@ -29,7 +29,7 @@ class SendMailListener
 
     public function sendMail($event, $data)
     {
-        $token = config('template-genius.api_token');
+        $token = config('markings.api_token');
 
         $types = $this->getClassFields($data);
 
@@ -38,7 +38,7 @@ class SendMailListener
         ])
             ->acceptJson()
             ->withOptions(['verify' => false])
-            ->post(rtrim(config('template-genius.api_url'), '/').'/events', [
+            ->post(rtrim(config('markings.api_url'), '/').'/events', [
                 'event' => str($event)->afterLast('\\'),
                 'types' => $types,
             ]);

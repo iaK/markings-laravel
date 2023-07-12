@@ -1,12 +1,13 @@
 {
-    "name": "iak/template-genius-laravel",
-    "description": "This is my package template-genius-laravel",
+    "name": "iak/markings-laravel",
+    "description": "The laravel integration for markings.io",
     "keywords": [
-        "TemplateGenius",
+        "margings.io",
+        "markings",
         "laravel",
-        "template-genius-laravel"
+        "markings-laravel"
     ],
-    "homepage": "https://github.com/iak/template-genius-laravel",
+    "homepage": "https://github.com/iak/markings-laravel",
     "license": "MIT",
     "authors": [
         {
@@ -37,8 +38,8 @@
     },
     "autoload": {
         "psr-4": {
-            "TemplateGenius\\TemplateGenius\\": "src/",
-            "TemplateGenius\\TemplateGenius\\Database\\Factories\\": "database/factories/"
+            "Markings\\": "src/",
+            "Markings\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
@@ -63,7 +64,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TemplateGenius\\TemplateGenius\\TemplateGeniusServiceProvider"
+                "Markings\\MarkingsServiceProvider"
             ]
         }
     },

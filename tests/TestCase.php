@@ -4,7 +4,7 @@ namespace Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use TemplateGenius\TemplateGenius\TemplateGeniusServiceProvider;
+use Markings\Markings\MarkingsServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -20,7 +20,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            TemplateGeniusServiceProvider::class,
+            MarkingsServiceProvider::class,
         ];
     }
 
