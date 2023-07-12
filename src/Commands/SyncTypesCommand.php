@@ -2,15 +2,15 @@
 
 namespace Markings\Commands;
 
-use ReflectionClass;
-use Markings\Actions\Api;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Markings\Actions\FindClassFromPathAction;
+use Markings\Actions\Api;
 use Markings\Actions\EloquentFieldParserAction;
+use Markings\Actions\FindClassFromPathAction;
 use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PopoFieldParserAction;
 use Markings\Exceptions\FilesNotFoundException;
+use ReflectionClass;
 
 class SyncTypesCommand extends Command
 {
@@ -31,11 +31,12 @@ class SyncTypesCommand extends Command
                 ->map(fn ($file) => FindClassFromPathAction::make()->handle($file))
                 ->reject(function (ReflectionClass $class) {
                     if (in_array($class->getName(), config('markings.exclude_files'))) {
-                        $this->comment('Skipping class: ' . $class->getName());
+                        $this->comment('Skipping class: '.$class->getName());
+
                         return true;
                     }
 
-                    $this->comment("Parsing class: " . $class->getName());
+                    $this->comment('Parsing class: '.$class->getName());
 
                     return false;
                 })
