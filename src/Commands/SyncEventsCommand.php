@@ -6,7 +6,7 @@ use ReflectionClass;
 use Markings\Actions\Api;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Markings\Actions\PpoFieldFinderAction;
+use Markings\Actions\PopoFieldFinderAction;
 use Markings\Actions\FindClassFromPathAction;
 use Markings\Exceptions\FilesNotFoundException;
 use Markings\Actions\GetFilesInGlobPatternAction;
@@ -79,7 +79,7 @@ class SyncEventsCommand extends Command
 
     protected function parseFile(ReflectionClass $class)
     {
-        [$columns, $skippedTypes] = PpoFieldFinderAction::make()->handle($class);
+        [$columns, $skippedTypes] = PopoFieldFinderAction::make()->handle($class);
 
         if ($class->isAbstract()) {
             return false;

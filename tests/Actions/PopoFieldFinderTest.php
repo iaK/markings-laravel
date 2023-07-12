@@ -1,10 +1,10 @@
 <?php
 
-use Markings\Actions\PpoFieldFinderAction;
+use Markings\Actions\PopoFieldFinderAction;
 use Tests\TestClasses\DataTransferObjects\Order;
 
 it('can find fields', function () {
-    [$fields, $skippedFields] = PpoFieldFinderAction::make()->handle(
+    [$fields, $skippedFields] = PopoFieldFinderAction::make()->handle(
         new ReflectionClass(Order::class)
     );
 
@@ -47,7 +47,7 @@ it('can find fields', function () {
 });
 
 it('defaults to string', function () {
-    [$fields, $skippedFields] = PpoFieldFinderAction::make()->handle(
+    [$fields, $skippedFields] = PopoFieldFinderAction::make()->handle(
         new ReflectionClass(Order::class)
     );
 
@@ -60,7 +60,7 @@ it('defaults to string', function () {
 });
 
 it('skips not allowed types', function () {
-    [$fields, $skippedFields] = PpoFieldFinderAction::make()->handle(
+    [$fields, $skippedFields] = PopoFieldFinderAction::make()->handle(
         new ReflectionClass(Order::class)
     );
 

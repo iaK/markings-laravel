@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Markings\Actions\FindClassFromPathAction;
 use Markings\Actions\EloquentFieldParserAction;
 use Markings\Actions\GetFilesInGlobPatternAction;
-use Markings\Actions\PpoFieldParserAction;
+use Markings\Actions\PopoFieldParserAction;
 use Markings\Exceptions\FilesNotFoundException;
 
 class SyncTypesCommand extends Command
@@ -84,7 +84,7 @@ class SyncTypesCommand extends Command
 
         [$columns, $skippedTypes] = $class->isSubclassOf(Model::class)
             ? EloquentFieldParserAction::make()->handle($class)
-            : PpoFieldParserAction::make()->handle($class);
+            : PopoFieldParserAction::make()->handle($class);
 
         if (! empty($skippedTypes)) {
             $types = collect($skippedTypes)

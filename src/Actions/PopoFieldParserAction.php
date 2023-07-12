@@ -2,12 +2,10 @@
 
 namespace Markings\Actions;
 
-use DateTime;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionProperty;
 
-class PpoFieldFinderAction extends Action
+class PopoFieldParserAction extends Action
 {
     public array $skippedTypes = [];
 
@@ -16,30 +14,23 @@ class PpoFieldFinderAction extends Action
         $fields = collect($class->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
             ->map(function (ReflectionProperty $property) use ($class) {
-                $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
+                $type = $property->getType()?->getName() ?: 'string';
 
-                if ($name) {
-                    $type = $this->mapInternalType($property->getType()?->getName());
-                } else {
-                    $name = 'string';
-                    $type = 'string';
-                }
+                $type = $this->mapInternalType($type);
 
-                if (! $type) {
+                if (is_null($type)) {
                     $this->skippedTypes[$class->getShortName()] = $property->getName();
 
                     return null;
                 }
 
                 return [
-                    'name' => $name,
-                    'as' => $property->getName(),
-                    'type' => $type,
+                    'name' => $property->getName(),
                     'nullable' => $property->getType()?->allowsNull() ?? false,
+                    'type' => $type,
                 ];
             })
             ->filter()
-            ->values()
             ->toArray();
 
         return [$fields, $this->skippedTypes];
@@ -52,14 +43,13 @@ class PpoFieldFinderAction extends Action
             'float' => 'float',
             'string' => 'string',
             'bool' => 'boolean',
-            DateTime::class => 'datetime',
+            \DateTime::class => 'datetime',
             \Carbon\Carbon::class => 'datetime',
-            \Closure::class => null,
             'array' => null,
             'object' => null,
             'callable' => null,
             'iterable' => null,
-            default => 'custom',
+            default => null,
         };
     }
 }

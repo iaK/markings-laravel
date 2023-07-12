@@ -1,10 +1,10 @@
 <?php
 
-use Markings\Actions\PpoFieldParserAction;
+use Markings\Actions\PopoFieldParserAction;
 use Tests\TestClasses\DataTransferObjects\Order;
 
 it('it can parse fields', function () {
-    [$fields, $skippedFields] = PpoFieldParserAction::make()->handle(
+    [$fields, $skippedFields] = PopoFieldParserAction::make()->handle(
         new ReflectionClass(Order::class)
     );
 
@@ -36,7 +36,7 @@ it('it can parse fields', function () {
 });
 
 it('skips types id doesnt recognize', function () {
-    [$fields, $skippedFields] = PpoFieldParserAction::make()->handle(
+    [$fields, $skippedFields] = PopoFieldParserAction::make()->handle(
         new ReflectionClass(Order::class)
     );
 

@@ -2,10 +2,12 @@
 
 namespace Markings\Actions;
 
+use DateTime;
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionProperty;
 
-class PpoFieldParserAction extends Action
+class PopoFieldFinderAction extends Action
 {
     public array $skippedTypes = [];
 
@@ -14,23 +16,30 @@ class PpoFieldParserAction extends Action
         $fields = collect($class->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
             ->map(function (ReflectionProperty $property) use ($class) {
-                $type = $property->getType()?->getName() ?: 'string';
+                $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
-                $type = $this->mapInternalType($type);
+                if ($name) {
+                    $type = $this->mapInternalType($property->getType()?->getName());
+                } else {
+                    $name = 'string';
+                    $type = 'string';
+                }
 
-                if (is_null($type)) {
+                if (! $type) {
                     $this->skippedTypes[$class->getShortName()] = $property->getName();
 
                     return null;
                 }
 
                 return [
-                    'name' => $property->getName(),
-                    'nullable' => $property->getType()?->allowsNull() ?? false,
+                    'name' => $name,
+                    'as' => $property->getName(),
                     'type' => $type,
+                    'nullable' => $property->getType()?->allowsNull() ?? false,
                 ];
             })
             ->filter()
+            ->values()
             ->toArray();
 
         return [$fields, $this->skippedTypes];
@@ -43,13 +52,14 @@ class PpoFieldParserAction extends Action
             'float' => 'float',
             'string' => 'string',
             'bool' => 'boolean',
-            \DateTime::class => 'datetime',
+            DateTime::class => 'datetime',
             \Carbon\Carbon::class => 'datetime',
+            \Closure::class => null,
             'array' => null,
             'object' => null,
             'callable' => null,
             'iterable' => null,
-            default => null,
+            default => 'custom',
         };
     }
 }
