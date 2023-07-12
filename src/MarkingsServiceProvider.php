@@ -1,6 +1,6 @@
 <?php
 
-namespace Markings\Markings;
+namespace Markings;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -21,7 +21,7 @@ class MarkingsServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('markings-laravel')
-            ->hasConfigFile()
+            ->hasConfigFile('markings')
             ->hasCommand(InstallCommand::class)
             ->hasCommand(SyncAllCommand::class)
             ->hasCommand(SyncTypesCommand::class)
