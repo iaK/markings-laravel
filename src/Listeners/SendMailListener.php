@@ -57,6 +57,7 @@ class SendMailListener
 
         return collect($reflectionClass->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
+            ->reject(fn (ReflectionProperty $property) => $property->getName() == 'socket')
             ->map(function (ReflectionProperty $property) use ($class, $nested) {
                 $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
