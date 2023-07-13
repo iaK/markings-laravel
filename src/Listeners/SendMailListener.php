@@ -34,7 +34,7 @@ class SendMailListener
         $types = $this->getClassFields($data);
 
         logger()->info($types);
-        
+
         $result = Http::withHeaders([
             'Authorization' => "Bearer $token",
         ])
