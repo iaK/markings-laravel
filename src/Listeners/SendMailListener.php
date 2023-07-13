@@ -32,6 +32,9 @@ class SendMailListener
         $token = config('markings.api_token');
 
         $types = $this->getClassFields($data);
+
+        logger()->info($types);
+        
         $result = Http::withHeaders([
             'Authorization' => "Bearer $token",
         ])
