@@ -16,7 +16,9 @@ class EloquentFieldParserAction extends Action
 
         $fields = collect($columns)
             ->map(function ($column) use ($table, $class) {
-                if (in_array($column, (new $class->name)->hidden)) {
+                $hidden = (new $class->name)->hidden ?? [];
+                
+                if (in_array($column, $hidden)) {
                     return null;
                 }
 
