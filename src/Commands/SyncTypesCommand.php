@@ -42,6 +42,7 @@ class SyncTypesCommand extends Command
                 })
                 ->map(fn (ReflectionClass $class) => $this->parseFile($class))
                 ->filter()
+                ->filter(fn ($type) => ! empty($type['fields']))
                 ->values()
                 ->pipe(function ($types) {
                     $this->comment('Syncing to server..');
