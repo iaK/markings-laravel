@@ -15,6 +15,8 @@ class PopoFieldFinderAction extends Action
     {
         $fields = collect($class->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
+            // Fix this..
+            ->reject(fn (ReflectionProperty $property) => $property->getName() == 'socket')
             ->map(function (ReflectionProperty $property) use ($class) {
                 $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
