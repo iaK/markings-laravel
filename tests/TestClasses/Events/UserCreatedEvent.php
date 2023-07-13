@@ -13,8 +13,7 @@ class UserCreatedEvent
         public int $name,
         public $noType,
         public \Closure $callback,
-    )
-    {
-        
+    ) {
+
     }
 }

@@ -56,7 +56,7 @@ class SendMailListener
             ->map(function (ReflectionProperty $property) use ($class, $nested) {
                 $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
-                if (!$name) {
+                if (! $name) {
                     $name = 'string';
                 }
 
