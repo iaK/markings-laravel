@@ -101,9 +101,10 @@ class SendMailListener
 
         return collect($columns)
             ->map(function ($column) use ($class) {
-                $value = is_object($class->{$column}) && method_exists($class->{$column} , '__toString')
+                $value = is_object($class->{$column}) && method_exists($class->{$column}, '__toString')
                     ? $class->{$column}->__toString()
                     : $class->{$column};
+
                 return [
                     'name' => $column,
                     'value' => $value,
