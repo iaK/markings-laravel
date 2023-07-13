@@ -32,7 +32,6 @@ class SendMailListener
         $token = config('markings.api_token');
 
         $types = $this->getClassFields($data);
-
         $result = Http::withHeaders([
             'Authorization' => "Bearer $token",
         ])
@@ -57,7 +56,11 @@ class SendMailListener
             ->map(function (ReflectionProperty $property) use ($class, $nested) {
                 $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
-                if ($property->getType()?->isBuiltin()) {
+                if (!$name) {
+                    $name = 'string';
+                }
+
+                if ($property->getType()?->isBuiltin() || $name == 'string') {
                     return [
                         'name' => $name,
                         'as' => $property->getName(),
