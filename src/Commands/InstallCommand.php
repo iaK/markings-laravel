@@ -23,13 +23,13 @@ class InstallCommand extends Command
         $this->line('                                |___/               ');
         $this->newLine();
         $this->call('vendor:publish', [
-            '--tag' => 'markings-config',
+            '--tag' => 'markings-laravel-config',
         ]);
         $this->info('Welcome to Markings!');
         $this->newLine();
         $this->info('To get started, you\'ll need an access token. Head over to https://markings.com/settings to generate one.');
         $this->newLine();
-        $token = $this->ask('Paste your access token here:');
+        $token = $this->ask('Paste your access token here');
         $this->newLine();
         File::append(base_path('.env'), 'MARKINGS_API_TOKEN="'.$token.'"');
         $this->info('Great! We\'ve added the token to your .env file.');
