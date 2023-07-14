@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Illuminate\Support\Facades\Config;
 
@@ -20,12 +20,12 @@ it('can install', function () {
         ->expectsOutput('Thats it! You\'re all set up.')
         ->expectsOutput('See you later!');
 
-        $this->assertEquals('::ACCESS_TOKEN::', Config::get('markings.api_token'));
-        $this->assertEquals([
-            'types_paths' => ['app/Models'],
-            'events_paths' => ['app/Events'],
-            'exclude_files' => [],
-            'api_url' => 'https://markings.io/api/v1/',
-            'api_token' => env('MARKINGS_API_TOKEN'),
-        ], Config::get('markings'));
+    $this->assertEquals('::ACCESS_TOKEN::', Config::get('markings.api_token'));
+    $this->assertEquals([
+        'types_paths' => ['app/Models'],
+        'events_paths' => ['app/Events'],
+        'exclude_files' => [],
+        'api_url' => 'https://markings.io/api/v1/',
+        'api_token' => env('MARKINGS_API_TOKEN'),
+    ], Config::get('markings'));
 });

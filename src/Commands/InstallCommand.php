@@ -3,8 +3,8 @@
 namespace Markings\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 
 class InstallCommand extends Command
 {
@@ -32,12 +32,12 @@ class InstallCommand extends Command
         $this->newLine();
         $token = $this->ask('Paste your access token here');
         $this->newLine();
-        File::append(base_path('.env'), PHP_EOL . 'MARKINGS_API_TOKEN="'.$token.'"' .PHP_EOL);
+        File::append(base_path('.env'), PHP_EOL.'MARKINGS_API_TOKEN="'.$token.'"'.PHP_EOL);
         $this->info('Great! We\'ve added the token to your .env file.');
         $this->newLine();
         $this->confirm('Now, make sure the paths in your config file (markings.php) are correct. Update if necessary, and then press enter to continue.', true);
-        
-        $config = require(base_path('config/markings.php'));
+
+        $config = require base_path('config/markings.php');
 
         Config::set('markings', $config);
         Config::set('markings.api_token', $token);
