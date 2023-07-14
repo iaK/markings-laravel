@@ -4,6 +4,7 @@ namespace Markings\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 
 class InstallCommand extends Command
 {
@@ -27,16 +28,23 @@ class InstallCommand extends Command
         ]);
         $this->info('Welcome to Markings!');
         $this->newLine();
-        $this->info('To get started, you\'ll need an access token. Head over to https://markings.com/settings to generate one.');
+        $this->info('To get started, you\'ll need an access token. Head over to https://markings.io/settings to generate one.');
         $this->newLine();
         $token = $this->ask('Paste your access token here');
         $this->newLine();
-        File::append(base_path('.env'), 'MARKINGS_API_TOKEN="'.$token.'"');
+        File::append(base_path('.env'), PHP_EOL . 'MARKINGS_API_TOKEN="'.$token.'"' .PHP_EOL);
         $this->info('Great! We\'ve added the token to your .env file.');
         $this->newLine();
         $this->confirm('Now, make sure the paths in your config file (markings.php) are correct. Update if necessary, and then press enter to continue.', true);
+        
+        $config = require(base_path('config/markings.php'));
+
+        Config::set('markings', $config);
+        Config::set('markings.api_token', $token);
+
         $this->newLine();
         if ($this->confirm('Awesome! All thats left is to sync your types & events. Should we do that for you?', true)) {
+            dd('yey');
             $this->call('markings:sync');
         } else {
             $this->info('No problem! You can run the sync command using \'php artisan markings:sync\' whenever you\'re ready.');
