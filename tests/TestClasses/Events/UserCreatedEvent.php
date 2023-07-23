@@ -8,16 +8,17 @@ use Tests\TestClasses\Models\User;
 class UserCreatedEvent
 {
     /**
-     * @var array<User> $users
+     * @var array<User>
      */
     public array $users;
 
-    /**   
-     * @var array<int> $ints
+    /**
+     * @var array<int>
      */
     public array $ints;
+
     /**
-     * @var array<array<string>> $arrays
+     * @var array<array<string>>
      */
     public array $arrays;
 
@@ -26,12 +27,12 @@ class UserCreatedEvent
     public User $coolUser;
 
     public Nested $nested;
-    
+
     public ?Nested $nullNested;
-    
+
     public int $name;
-    
+
     public $noType;
-    
+
     public \Closure $callback;
 }

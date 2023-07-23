@@ -3,24 +3,23 @@
 namespace Tests\TestClasses\DataTransferObjects;
 
 use Tests\TestClasses\Models\User;
-use Tests\TestClasses\DataTransferObjects\OrderRow;
 
 class Order
 {
     /**
-     * @var array<OrderRow> $items
+     * @var array<OrderRow>
      */
     public array $items;
 
     /**
-     * @var array<int> $ints
+     * @var array<int>
      */
     public array $ints;
 
     public array $strings;
 
     /**
-     * @var array<array<string>> $arrays
+     * @var array<array<string>>
      */
     public array $arrays;
 

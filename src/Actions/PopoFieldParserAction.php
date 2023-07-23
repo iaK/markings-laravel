@@ -16,7 +16,7 @@ class PopoFieldParserAction extends Action
             ->map(function (ReflectionProperty $property) use ($class) {
                 $information = GetPropertyInformationAction::make()->handle($property);
 
-                if (!$information) {
+                if (! $information) {
                     $this->skippedTypes[$class->getShortName()] = $property->getName();
 
                     return null;

@@ -1,10 +1,11 @@
-<?php 
+<?php
 
-use Tests\TestClasses\Models\User;
 use Markings\Actions\GetPropertyInformationAction;
+use Tests\TestClasses\Models\User;
 
 it('can get information about a primitive type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         public int $number;
     });
 
@@ -20,7 +21,8 @@ it('can get information about a primitive type', function () {
 });
 
 it('defaults to string if a type is missing', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         public $number;
     });
 
@@ -36,7 +38,8 @@ it('defaults to string if a type is missing', function () {
 });
 
 it('can get information about a nullable primitive type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         public ?int $number;
     });
 
@@ -52,7 +55,8 @@ it('can get information about a nullable primitive type', function () {
 });
 
 it('can get information about a multiple primitive type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         /**
          * @var array<int>
          */
@@ -71,7 +75,8 @@ it('can get information about a multiple primitive type', function () {
 });
 
 it('defaults to an array of strings if array dockblock is missing', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         public array $number;
     });
 
@@ -87,7 +92,8 @@ it('defaults to an array of strings if array dockblock is missing', function () 
 });
 
 it('can get information about a custom type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         public User $user;
     });
 
@@ -103,7 +109,8 @@ it('can get information about a custom type', function () {
 });
 
 it('can get information about a multiple custom type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         /**
          * @var array<User>
          */
@@ -122,7 +129,8 @@ it('can get information about a multiple custom type', function () {
 });
 
 it('can get information about a nullable custom type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         public ?User $user;
     });
 
@@ -138,7 +146,8 @@ it('can get information about a nullable custom type', function () {
 });
 
 it('can get information about a multiple nullable custom type', function () {
-    $class = new ReflectionClass(new class {
+    $class = new ReflectionClass(new class
+    {
         /**
          * @var array<User>
          */
@@ -155,5 +164,3 @@ it('can get information about a multiple nullable custom type', function () {
         'multiple' => true,
     ]);
 });
-
-

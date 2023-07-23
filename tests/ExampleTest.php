@@ -1,10 +1,9 @@
 <?php
 
-use Tests\TestClasses\Models\User;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Artisan;
-use Tests\TestClasses\Events\TestEvent;
 use Markings\Listeners\SendMailListener;
+use Tests\TestClasses\Events\TestEvent;
+use Tests\TestClasses\Models\User;
 
 it('does stuff', function () {
     Config::set('markings.api_token', '5|wPLaYXVg7MT8j95kQL3XJv1ToYBdFJjEmJhFmkNm');

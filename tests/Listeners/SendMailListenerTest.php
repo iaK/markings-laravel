@@ -1,12 +1,12 @@
 <?php
 
-use Tests\TestClasses\Models\User;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Markings\Listeners\SendMailListener;
-use Tests\TestClasses\Models\Nested\Nested;
 use Tests\TestClasses\Events\UserCreatedEvent;
+use Tests\TestClasses\Models\Nested\Nested;
+use Tests\TestClasses\Models\User;
 
 it('can send events', function () {
     Storage::put('markings-event.json', json_encode([UserCreatedEvent::class]));
@@ -33,7 +33,7 @@ it('can send events', function () {
     $event->name = 1;
     $event->noType = 'hey';
     $event->callback = fn () => null;
-    
+
     (new SendMailListener())->handle(
         UserCreatedEvent::class,
         [$event]
@@ -108,7 +108,7 @@ it('can send events', function () {
                         'value' => $userB->updated_at->toDateTimeString(),
                     ],
                 ],
-            ]
+            ],
         ], $types['types'][0]);
         $this->assertEquals([
             'name' => 'int',

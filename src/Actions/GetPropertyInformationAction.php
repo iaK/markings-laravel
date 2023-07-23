@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 namespace Markings\Actions;
 
-use ReflectionProperty;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Object_;
+use ReflectionProperty;
 
 class GetPropertyInformationAction extends Action
 {
@@ -14,7 +14,7 @@ class GetPropertyInformationAction extends Action
         $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
 
         $isCollection = false;
-        
+
         if ($name) {
             $type = $this->mapInternalType($property->getType()?->getName());
         } else {
@@ -23,7 +23,7 @@ class GetPropertyInformationAction extends Action
         }
 
         if ($type == 'array') {
-            $factory  = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+            $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
 
             if (! $property->getDocComment()) {
                 $type = 'string';
@@ -36,7 +36,7 @@ class GetPropertyInformationAction extends Action
                     return false;
                 }
 
-                $name = $collectionType instanceof Object_ 
+                $name = $collectionType instanceof Object_
                     ? $collectionType->getFqsen()->getName()
                     : $collectionType->__toString();
                 $type = $this->mapInternalType($name);
@@ -57,7 +57,6 @@ class GetPropertyInformationAction extends Action
             'multiple' => $isCollection,
         ];
     }
-
 
     protected function mapInternalType(string $type)
     {

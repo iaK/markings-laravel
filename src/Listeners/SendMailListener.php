@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Markings\Actions\GetPropertyInformationAction;
 use ReflectionClass;
 use ReflectionProperty;
@@ -72,7 +71,7 @@ class SendMailListener
                         'name' => $information['name'],
                         'as' => $information['as'],
                         'multiple' => $information['multiple'],
-                    ], 
+                    ],
                     $information['type'] === 'custom'
                         ? ['types' => $this->getValues($information, $class)]
                         : ['value' => $this->getValues($information, $class)]
@@ -95,8 +94,8 @@ class SendMailListener
                     })
                     ->toArray()
                 : $this->getNestedTypes($class->{$information['as']});
-        } 
-        
+        }
+
         return $class->{$information['as']};
     }
 
