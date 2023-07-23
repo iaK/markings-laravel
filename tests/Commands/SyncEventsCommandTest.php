@@ -22,30 +22,63 @@ it('can sync events', function () {
         $types = json_decode($request->body(), true);
 
         $this->assertEquals('UserCreatedEvent', $types['events'][0]['name']);
+
+        $this->assertEquals([
+            'name' => 'User',
+            'as' => 'users',
+            'type' => 'custom',
+            'nullable' => false,
+            'multiple' => true,
+        ], $types['events'][0]['types'][0]);
+        $this->assertEquals([
+            'name' => 'int',
+            'as' => 'ints',
+            'type' => 'integer',
+            'nullable' => false,
+            'multiple' => true,
+        ], $types['events'][0]['types'][1]);
+        $this->assertEquals([
+            'name' => 'string',
+            'as' => 'strings',
+            'type' => 'string',
+            'nullable' => false,
+            'multiple' => true,
+        ], $types['events'][0]['types'][2]);
         $this->assertEquals([
             'name' => 'User',
             'as' => 'coolUser',
             'type' => 'custom',
             'nullable' => false,
-        ], $types['events'][0]['types'][0]);
+            'multiple' => false,
+        ], $types['events'][0]['types'][3]);
         $this->assertEquals([
             'name' => 'Nested',
-            'as' => 'megaNested',
+            'as' => 'nested',
+            'type' => 'custom',
+            'nullable' => false,
+            'multiple' => false,
+        ], $types['events'][0]['types'][4]);
+        $this->assertEquals([
+            'name' => 'Nested',
+            'as' => 'nullNested',
             'type' => 'custom',
             'nullable' => true,
-        ], $types['events'][0]['types'][1]);
+            'multiple' => false,
+        ], $types['events'][0]['types'][5]);
         $this->assertEquals([
             'name' => 'int',
             'as' => 'name',
             'type' => 'integer',
             'nullable' => false,
-        ], $types['events'][0]['types'][2]);
+            'multiple' => false,
+        ], $types['events'][0]['types'][6]);
         $this->assertEquals([
             'name' => 'string',
             'as' => 'noType',
             'type' => 'string',
             'nullable' => false,
-        ], $types['events'][0]['types'][3]);
+            'multiple' => false,
+        ], $types['events'][0]['types'][7]);
 
         return true;
     });

@@ -21,6 +21,7 @@
         "doctrine/dbal": "^3.6",
         "guzzlehttp/guzzle": "^7.7",
         "illuminate/contracts": "^10.0",
+        "phpdocumentor/reflection-docblock": "^5.3",
         "spatie/laravel-package-tools": "^1.14.0"
     },
     "require-dev": {

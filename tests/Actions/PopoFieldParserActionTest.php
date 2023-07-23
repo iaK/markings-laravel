@@ -8,8 +8,24 @@ it('it can parse fields', function () {
         new ReflectionClass(Order::class)
     );
 
-    $this->assertEquals(getField('item', $fields), [
-        'name' => 'item',
+    $this->assertCount(10, $fields);
+    $this->assertEquals(getField('items', $fields), [
+        'name' => 'items',
+        'nullable' => false,
+        'type' => 'custom',
+    ]);
+    $this->assertEquals(getField('ints', $fields), [
+        'name' => 'ints',
+        'nullable' => false,
+        'type' => 'integer',
+    ]);
+    $this->assertEquals(getField('strings', $fields), [
+        'name' => 'strings',
+        'nullable' => false,
+        'type' => 'string',
+    ]);
+    $this->assertEquals(getField('comment', $fields), [
+        'name' => 'comment',
         'nullable' => true,
         'type' => 'string',
     ]);
@@ -28,10 +44,20 @@ it('it can parse fields', function () {
         'nullable' => false,
         'type' => 'boolean',
     ]);
+    $this->assertEquals(getField('unknown', $fields), [
+        'name' => 'unknown',
+        'nullable' => false,
+        'type' => 'string',
+    ]);
     $this->assertEquals(getField('created_at', $fields), [
         'name' => 'created_at',
         'nullable' => false,
         'type' => 'datetime',
+    ]);
+    $this->assertEquals(getField('user', $fields), [
+        'name' => 'user',
+        'nullable' => false,
+        'type' => 'custom',
     ]);
 });
 
@@ -39,6 +65,5 @@ it('skips types id doesnt recognize', function () {
     [$fields, $skippedFields] = PopoFieldParserAction::make()->handle(
         new ReflectionClass(Order::class)
     );
-
-    $this->assertEquals(['Order' => 'user'], $skippedFields);
+    $this->assertEquals(['Order' => 'arrays'], $skippedFields);
 });

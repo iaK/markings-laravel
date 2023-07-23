@@ -44,7 +44,7 @@ it('can do sync types', function () {
         expect($types['types'][0]['fields'][5]['nullable'])->toBe(true);
         expect($types['types'][0]['fields'][5]['type'])->toBe('datetime');
         expect($types['types'][1]['name'])->toBe('Nested');
-        expect($types['types'][1]['fields'])->toHaveCount(2);
+        expect($types['types'][1]['fields'])->toHaveCount(3);
         expect($types['types'][1]['fields'][0]['name'])->toBe('name');
         expect($types['types'][1]['fields'][0]['nullable'])->toBe(false);
         expect($types['types'][1]['fields'][0]['type'])->toBe('string');

@@ -3,7 +3,6 @@
 namespace Markings\Actions;
 
 use DateTime;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -18,27 +17,15 @@ class PopoFieldFinderAction extends Action
             // Fix this..
             ->reject(fn (ReflectionProperty $property) => $property->getName() == 'socket')
             ->map(function (ReflectionProperty $property) use ($class) {
-                $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
+                $information = GetPropertyInformationAction::make()->handle($property);
 
-                if ($name) {
-                    $type = $this->mapInternalType($property->getType()?->getName());
-                } else {
-                    $name = 'string';
-                    $type = 'string';
-                }
-
-                if (! $type) {
+                if (! $information) {
                     $this->skippedTypes[$class->getShortName()] = $property->getName();
 
                     return null;
                 }
 
-                return [
-                    'name' => $name,
-                    'as' => $property->getName(),
-                    'type' => $type,
-                    'nullable' => $property->getType()?->allowsNull() ?? false,
-                ];
+                return $information;
             })
             ->filter()
             ->values()
@@ -57,7 +44,7 @@ class PopoFieldFinderAction extends Action
             DateTime::class => 'datetime',
             \Carbon\Carbon::class => 'datetime',
             \Closure::class => null,
-            'array' => null,
+            'array' => 'array',
             'object' => null,
             'callable' => null,
             'iterable' => null,

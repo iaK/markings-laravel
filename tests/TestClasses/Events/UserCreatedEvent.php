@@ -7,13 +7,31 @@ use Tests\TestClasses\Models\User;
 
 class UserCreatedEvent
 {
-    public function __construct(
-        public User $coolUser,
-        public ?Nested $megaNested,
-        public int $name,
-        public $noType,
-        public \Closure $callback,
-    ) {
+    /**
+     * @var array<User> $users
+     */
+    public array $users;
 
-    }
+    /**   
+     * @var array<int> $ints
+     */
+    public array $ints;
+    /**
+     * @var array<array<string>> $arrays
+     */
+    public array $arrays;
+
+    public array $strings;
+
+    public User $coolUser;
+
+    public Nested $nested;
+    
+    public ?Nested $nullNested;
+    
+    public int $name;
+    
+    public $noType;
+    
+    public \Closure $callback;
 }

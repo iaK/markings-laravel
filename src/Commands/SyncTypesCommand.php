@@ -50,6 +50,7 @@ class SyncTypesCommand extends Command
                     $result = Api::syncTypes($types);
 
                     if ($result->failed()) {
+                        dd($result->body());
                         $this->error('There was an unexpected error when calling the server. Error message:');
                         $this->error($result->body());
                         $this->error('Sync failed!');

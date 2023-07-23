@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Markings\Actions\GetPropertyInformationAction;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -46,45 +47,57 @@ class SendMailListener
             ]);
 
         if ($result->failed()) {
+            dd($result->body());
             logger()->error($result->json());
             throw new \Exception('Sync failed!');
         }
     }
 
-    protected function getClassFields($class, $nested = false)
+    protected function getClassFields($class)
     {
         $reflectionClass = new ReflectionClass($class);
 
         return collect($reflectionClass->getProperties())
             ->filter(fn (ReflectionProperty $property) => $property->isPublic())
-            ->reject(fn (ReflectionProperty $property) => $property->getName() == 'socket')
-            ->map(function (ReflectionProperty $property) use ($class, $nested) {
-                $name = Str::of($property->getType()?->getName())->afterLast('\\')->toString();
+            ->filter(fn (ReflectionProperty $property) => $property->getDeclaringClass()->getName() === $reflectionClass->getName())
+            ->map(function (ReflectionProperty $property) use ($class) {
+                $information = GetPropertyInformationAction::make()->handle($property);
 
-                if (! $name) {
-                    $name = 'string';
-                }
-
-                if ($property->getType()?->isBuiltin() || $name == 'string') {
-                    return [
-                        'name' => $name,
-                        'as' => $property->getName(),
-                        'value' => $class->{$property->getName()},
-                    ];
-                }
-
-                if ($nested || is_null($class->{$property->getName()})) {
+                if (! $information || is_null($class->{$information['as']})) {
                     return;
                 }
 
-                return [
-                    'name' => $name,
-                    'as' => $property->getName(),
-                    'types' => $this->getNestedTypes($class->{$property->getName()}),
-                ];
+                return array_merge(
+                    [
+                        'name' => $information['name'],
+                        'as' => $information['as'],
+                        'multiple' => $information['multiple'],
+                    ], 
+                    $information['type'] === 'custom'
+                        ? ['types' => $this->getValues($information, $class)]
+                        : ['value' => $this->getValues($information, $class)]
+                );
             })
             ->filter()
+            ->values()
             ->toArray();
+    }
+
+    protected function getValues(array $information, $class)
+    {
+        if ($information['type'] == 'custom') {
+            return is_array($class->{$information['as']})
+                ? collect($class->{$information['as']})
+                    ->map(function ($item) use ($class, $information) {
+                        return $information['type'] == 'custom'
+                            ? $this->getNestedTypes($item)
+                            : $class->{$information['as']};
+                    })
+                    ->toArray()
+                : $this->getNestedTypes($class->{$information['as']});
+        } 
+        
+        return $class->{$information['as']};
     }
 
     protected function getNestedTypes($instance)

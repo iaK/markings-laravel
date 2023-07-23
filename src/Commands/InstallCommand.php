@@ -44,7 +44,6 @@ class InstallCommand extends Command
 
         $this->newLine();
         if ($this->confirm('Awesome! All thats left is to sync your types & events. Should we do that for you?', true)) {
-            dd('yey');
             $this->call('markings:sync');
         } else {
             $this->info('No problem! You can run the sync command using \'php artisan markings:sync\' whenever you\'re ready.');

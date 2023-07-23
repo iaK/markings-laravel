@@ -10,5 +10,7 @@ class Nested
 
     public ?int $age;
 
+    public array $strings;
+
     public Closure $closure;
 }
