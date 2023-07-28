@@ -46,7 +46,6 @@ class SendMailListener
             ]);
 
         if ($result->failed()) {
-            dd($result->body());
             logger()->error($result->json());
             throw new \Exception('Sync failed!');
         }
