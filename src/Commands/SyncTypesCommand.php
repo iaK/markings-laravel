@@ -17,7 +17,7 @@ use Src\Traits\HandlesEnvironments;
 class SyncTypesCommand extends Command
 {
     use HandlesEnvironments;
-    
+
     public $signature = 'markings:sync-types';
 
     public $description = 'Sync all your types to Markings';

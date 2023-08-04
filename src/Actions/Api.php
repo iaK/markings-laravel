@@ -27,16 +27,15 @@ class Api
             throw new \Exception('Could not fetch environments from Markings. Please check your API token.');
         }
 
-        return collect($result->json('environments'))->map(fn ($environment) => 
-            new EnvironmentDTO(
-                $environment['name'],
-                $environment['main'],
-                $environment['locked'],
-            )
+        return collect($result->json('environments'))->map(fn ($environment) => new EnvironmentDTO(
+            $environment['name'],
+            $environment['main'],
+            $environment['locked'],
+        )
         );
     }
 
-    public static function createEnvironment(string $environmentName, $copyFrom = null) : bool
+    public static function createEnvironment(string $environmentName, $copyFrom = null): bool
     {
         $token = config('markings.api_token');
 

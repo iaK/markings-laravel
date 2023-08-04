@@ -3,15 +3,15 @@
 namespace Markings\Commands;
 
 use Exception;
-use ReflectionClass;
-use Markings\Actions\Api;
 use Illuminate\Console\Command;
-use Src\Traits\HandlesEnvironments;
 use Illuminate\Support\Facades\Storage;
-use Markings\Actions\PopoFieldFinderAction;
+use Markings\Actions\Api;
 use Markings\Actions\FindClassFromPathAction;
-use Markings\Exceptions\FilesNotFoundException;
 use Markings\Actions\GetFilesInGlobPatternAction;
+use Markings\Actions\PopoFieldFinderAction;
+use Markings\Exceptions\FilesNotFoundException;
+use ReflectionClass;
+use Src\Traits\HandlesEnvironments;
 
 class SyncEventsCommand extends Command
 {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Src\DataTransferObjects;
 
@@ -8,8 +8,7 @@ class EnvironmentDTO
         public string $name,
         public bool $main,
         public bool $locked
-    )
-    {
-        
+    ) {
+
     }
 }

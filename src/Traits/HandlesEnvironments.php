@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 namespace Src\Traits;
 
 use Markings\Actions\Api;
 
-trait HandlesEnvironments 
+trait HandlesEnvironments
 {
-    protected function handleEnvironment() : bool
+    protected function handleEnvironment(): bool
     {
         $environments = Api::getEnvironments();
 
