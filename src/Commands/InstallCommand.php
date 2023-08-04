@@ -36,13 +36,22 @@ class InstallCommand extends Command
         File::append(base_path('.env'), PHP_EOL.'MARKINGS_API_TOKEN="'.$token.'"'.PHP_EOL);
         $this->info('Great! We\'ve added the token to your .env file.');
 
-        $environments = resolve(Api::class)->getEnvironments();
+        $config = require base_path('config/markings.php');
 
-        if ($environments->json()->environments->count() > 1) {
+        Config::set('markings', $config);
+        Config::set('markings.api_token', $token);
+
+        $environments = resolve(Api::class)->getEnvironments();
+        
+        if (count($environments->json()['environments']) > 1) {
             $this->newLine();
+<<<<<<< HEAD
             $chosenEnvironment = $this->choice('Which environment would you like to use?', $environments->json()->environments->map(fn ($e) => $e->name.$e->main ? ' (main)' : '')->toArray(), 0);
+=======
+            $chosenEnvironment = $this->choice('Which environment would you like to use?', collect($environments->json()['environments'])->map(fn ($e) => $e['name']. ($e['main'] ? ' (main)' : ''))->toArray(), 0);
+>>>>>>> 50fb3a9 (wip)
         } else {
-            $chosenEnvironment = $environments->json()->environments->first()->name;
+            $chosenEnvironment = $environments->json()['environments'][0]['name'];
         }
 
         $chosenEnvironment = str($chosenEnvironment)->replace(' (main)', '')->trim()->__toString();
