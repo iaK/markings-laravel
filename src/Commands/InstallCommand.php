@@ -42,10 +42,10 @@ class InstallCommand extends Command
         Config::set('markings.api_token', $token);
 
         $environments = resolve(Api::class)->getEnvironments();
-        
+
         if (count($environments->json()['environments']) > 1) {
             $this->newLine();
-            $chosenEnvironment = $this->choice('Which environment would you like to use?', collect($environments->json()['environments'])->map(fn ($e) => $e['name']. ($e['main'] ? ' (main)' : ''))->toArray(), 0);
+            $chosenEnvironment = $this->choice('Which environment would you like to use?', collect($environments->json()['environments'])->map(fn ($e) => $e['name'].($e['main'] ? ' (main)' : ''))->toArray(), 0);
         } else {
             $chosenEnvironment = $environments->json()['environments'][0]['name'];
         }
