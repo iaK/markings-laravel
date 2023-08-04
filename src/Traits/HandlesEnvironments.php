@@ -12,8 +12,8 @@ trait HandlesEnvironments
 
         if (! $environments->contains(fn ($environment) => $environment->name == config('markings.environment'))) {
 
-            if ($this->ask('The environment "'.config('markings.environment').'" does not exist. Would you like to create it?', true)) {
-                $copyFrom = $this->ask('Would you like to copy from another environment?', true)
+            if ($this->confirm('The environment "'.config('markings.environment').'" does not exist. Would you like to create it?', true)) {
+                $copyFrom = $this->confirm('Would you like to copy from another environment?', true)
                     ? $this->choice('Which environment would you like to copy from?', $environments->map(fn ($e) => $e->name)->toArray())
                     : null;
 
@@ -30,7 +30,7 @@ trait HandlesEnvironments
                 $this->info('Environment created successfully!');
 
                 if ($copyFrom) {
-                    $this->comment('Environment copied from "'.$copyFrom.'"');
+                    $this->info('Environment copied from "'.$copyFrom.'"');
                 }
             } else {
                 $this->error('Sync failed!');

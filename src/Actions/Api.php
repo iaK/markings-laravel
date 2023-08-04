@@ -45,7 +45,7 @@ class Api
             ->acceptJson()
             ->withOptions(['verify' => false])
             ->post(rtrim(config('markings.api_url'), '/').'/environments', [
-                'name' => $environmentName,
+                'environment' => $environmentName,
                 'copy_from' => $copyFrom,
             ]);
 
@@ -56,6 +56,8 @@ class Api
         if ($result->status() == 422) {
             throw new \Exception($result->json('message'));
         }
+
+        return false;
     }
 
     public static function syncEvents($events)
