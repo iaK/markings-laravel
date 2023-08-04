@@ -2,6 +2,7 @@
 
 namespace Markings\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Markings\Actions\Api;
@@ -11,9 +12,12 @@ use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PopoFieldParserAction;
 use Markings\Exceptions\FilesNotFoundException;
 use ReflectionClass;
+use Src\Traits\HandlesEnvironments;
 
 class SyncTypesCommand extends Command
 {
+    use HandlesEnvironments;
+    
     public $signature = 'markings:sync-types';
 
     public $description = 'Sync all your types to Markings';
@@ -45,12 +49,18 @@ class SyncTypesCommand extends Command
                 ->filter(fn ($type) => ! empty($type['fields']))
                 ->values()
                 ->pipe(function ($types) {
+                    if (! $this->handleEnvironment()) {
+                        throw new Exception('Sync failed!');
+                    }
+
+                    return $types;
+                })
+                ->pipe(function ($types) {
                     $this->comment('Syncing to server..');
 
                     $result = Api::syncTypes($types);
 
                     if ($result->failed()) {
-                        dd($result->body());
                         $this->error('There was an unexpected error when calling the server. Error message:');
                         $this->error($result->body());
                         $this->error('Sync failed!');

@@ -2,17 +2,21 @@
 
 namespace Markings\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
-use Markings\Actions\Api;
-use Markings\Actions\FindClassFromPathAction;
-use Markings\Actions\GetFilesInGlobPatternAction;
-use Markings\Actions\PopoFieldFinderAction;
-use Markings\Exceptions\FilesNotFoundException;
+use Exception;
 use ReflectionClass;
+use Markings\Actions\Api;
+use Illuminate\Console\Command;
+use Src\Traits\HandlesEnvironments;
+use Illuminate\Support\Facades\Storage;
+use Markings\Actions\PopoFieldFinderAction;
+use Markings\Actions\FindClassFromPathAction;
+use Markings\Exceptions\FilesNotFoundException;
+use Markings\Actions\GetFilesInGlobPatternAction;
 
 class SyncEventsCommand extends Command
 {
+    use HandlesEnvironments;
+
     public $signature = 'markings:sync-events';
 
     public $description = 'Sync all your events to Markings';
@@ -42,6 +46,13 @@ class SyncEventsCommand extends Command
                 ->map(fn (ReflectionClass $class) => $this->parseFile($class))
                 ->filter()
                 ->values()
+                ->pipe(function ($types) {
+                    if (! $this->handleEnvironment()) {
+                        throw new Exception('Sync failed!');
+                    }
+
+                    return $types;
+                })
                 ->pipe(function ($events) {
                     $this->comment('Syncing to server..');
 
