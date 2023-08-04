@@ -34,7 +34,7 @@ class Api
             ->withOptions(['verify' => false])
             ->post(rtrim(config('markings.api_url'), '/').'/events/sync', [
                 'environment' => config('markings.environment'),
-                'events' => $events
+                'events' => $events,
             ]);
     }
 
@@ -49,7 +49,7 @@ class Api
             ->withOptions(['verify' => false])
             ->post(rtrim(config('markings.api_url'), '/').'/types', [
                 'environment' => config('markings.environment'),
-                'types' => $types
+                'types' => $types,
             ]);
     }
 }
