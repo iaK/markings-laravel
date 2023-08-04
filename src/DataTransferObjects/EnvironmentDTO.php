@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\DataTransferObjects;
+namespace Markings\DataTransferObjects;
 
 class EnvironmentDTO
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Traits;
+namespace Markings\Traits;
 
 use Markings\Actions\Api;
 

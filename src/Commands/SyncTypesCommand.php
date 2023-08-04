@@ -12,7 +12,7 @@ use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PopoFieldParserAction;
 use Markings\Exceptions\FilesNotFoundException;
 use ReflectionClass;
-use Src\Traits\HandlesEnvironments;
+use Markings\Traits\HandlesEnvironments;
 
 class SyncTypesCommand extends Command
 {
