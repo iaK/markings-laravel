@@ -3,7 +3,7 @@
 namespace Markings\Actions;
 
 use Illuminate\Support\Facades\Http;
-use Src\DataTransferObjects\EnvironmentDTO;
+use Markings\DataTransferObjects\EnvironmentDTO;
 
 class Api
 {
