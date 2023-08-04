@@ -4,13 +4,13 @@ namespace Markings\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
-use Markings\Traits\HandlesEnvironments;
 use Illuminate\Support\Facades\Storage;
 use Markings\Actions\Api;
 use Markings\Actions\FindClassFromPathAction;
 use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PopoFieldFinderAction;
 use Markings\Exceptions\FilesNotFoundException;
+use Markings\Traits\HandlesEnvironments;
 use ReflectionClass;
 
 class SyncEventsCommand extends Command

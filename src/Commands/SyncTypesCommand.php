@@ -11,8 +11,8 @@ use Markings\Actions\FindClassFromPathAction;
 use Markings\Actions\GetFilesInGlobPatternAction;
 use Markings\Actions\PopoFieldParserAction;
 use Markings\Exceptions\FilesNotFoundException;
-use ReflectionClass;
 use Markings\Traits\HandlesEnvironments;
+use ReflectionClass;
 
 class SyncTypesCommand extends Command
 {
