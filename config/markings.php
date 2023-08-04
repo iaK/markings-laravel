@@ -14,6 +14,8 @@ return [
         // DontSyncThis::class,
     ],
 
+    'environment' => 'initial-environment',
+
     'api_url' => 'https://markings.io/api/v1/',
     'api_token' => env('MARKINGS_API_TOKEN'),
 ];

@@ -41,6 +41,7 @@ class SendMailListener
             ->acceptJson()
             ->withOptions(['verify' => false])
             ->post(rtrim(config('markings.api_url'), '/').'/events', [
+                'environment' => config('markings.environment'),
                 'event' => str($event)->afterLast('\\'),
                 'types' => $types,
             ]);

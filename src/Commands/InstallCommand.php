@@ -5,6 +5,7 @@ namespace Markings\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
+use Markings\Actions\Api;
 
 class InstallCommand extends Command
 {
@@ -34,6 +35,24 @@ class InstallCommand extends Command
         $this->newLine();
         File::append(base_path('.env'), PHP_EOL.'MARKINGS_API_TOKEN="'.$token.'"'.PHP_EOL);
         $this->info('Great! We\'ve added the token to your .env file.');
+
+        $environments = resolve(Api::class)->getEnvironments();
+
+        if ($environments->json()->environments->count() > 1) {
+            $this->newLine();
+            $chosenEnvironment = $this->choice('Which environment would you like to use?', $environments->json()->environments->map(fn ($e) => $e->name . $e->main ? ' (main)' : '')->toArray(), 0);
+        } else {
+            $chosenEnvironment = $environments->json()->environments->first()->name;
+        }
+
+        $chosenEnvironment = str($chosenEnvironment)->replace(' (main)', '')->trim()->__toString();
+
+        File::put(config_path('markings.php'), str_replace(
+            "'initial-environment'",
+            "'$chosenEnvironment'",
+            File::get(config_path('markings.php'))
+        ));
+
         $this->newLine();
         $this->confirm('Now, make sure the paths in your config file (markings.php) are correct. Update if necessary, and then press enter to continue.', true);
 
