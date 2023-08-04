@@ -44,6 +44,7 @@ class SendMailListener
                 'environment' => config('markings.environment'),
                 'event' => str($event)->afterLast('\\'),
                 'types' => $types,
+                'dry' => config('markings.dry', false),
             ]);
 
         if ($result->failed()) {
