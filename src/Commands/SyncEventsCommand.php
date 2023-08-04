@@ -25,7 +25,7 @@ class SyncEventsCommand extends Command
 
     public function handle(): int
     {
-        $this->comment('Event Sync started..');
+        $this->info('Event Sync started..');
 
         try {
             $success = collect(config('markings.events_paths'))
@@ -54,7 +54,7 @@ class SyncEventsCommand extends Command
                     return $types;
                 })
                 ->pipe(function ($events) {
-                    $this->comment('Syncing to server..');
+                    $this->info('Syncing to server..');
 
                     $result = Api::syncEvents($events);
 
@@ -66,7 +66,7 @@ class SyncEventsCommand extends Command
                         return false;
                     }
 
-                    $this->comment('Sync successful!');
+                    $this->info('Sync successful!');
 
                     Storage::put('markings-events.json', json_encode($this->events));
 

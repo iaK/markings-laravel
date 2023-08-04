@@ -12,9 +12,9 @@ trait HandlesEnvironments
 
         if (! $environments->contains(fn ($environment) => $environment->name == config('markings.environment'))) {
 
-            if ($this->ask('The environment "'.config('markings.environment').'" does not exist. Would you like to create it?')) {
-                $copyFrom = $this->ask('Would you like to copy from another environment?')
-                    ? $this->choose('Which environment would you like to copy from?', $environments->map(fn ($e) => $e->name)->toArray())
+            if ($this->ask('The environment "'.config('markings.environment').'" does not exist. Would you like to create it?', true)) {
+                $copyFrom = $this->ask('Would you like to copy from another environment?', true)
+                    ? $this->choice('Which environment would you like to copy from?', $environments->map(fn ($e) => $e->name)->toArray())
                     : null;
 
                 try {
@@ -27,13 +27,13 @@ trait HandlesEnvironments
                     return false;
                 }
 
-                $this->comment('Environment created successfully!');
+                $this->info('Environment created successfully!');
 
                 if ($copyFrom) {
                     $this->comment('Environment copied from "'.$copyFrom.'"');
                 }
             } else {
-                $this->comment('Sync failed!');
+                $this->error('Sync failed!');
 
                 return false;
             }
